@@ -2,8 +2,12 @@ const express = require('express');
 const hbs = require('hbs');
 const exphbs = require('express-handlebars');
 const routes = require('./routes/routes');
+const bodyParser = require('body-parser');
 const app = express();
 const PORT = 3000;
+
+//Необходимо для работы body-parser и обработки форм
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 //Для работы с шаблонизатором handlebars
 app.engine('hbs', exphbs(

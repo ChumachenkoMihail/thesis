@@ -1,31 +1,31 @@
 <body>
 {{>header}}
 <div class="reg-content" align="center">
-    <div>
+    <form method="post" action="/registration">
         <div>
           <h1 class="form-title">Регистрация</h1>
         </div>
         <div class="reg-group">
-            <input type="text" class="reg-input" placeholder="Фамилия">
+            <input type="text" class="reg-input" placeholder="Фамилия" name="userSurname">
         </div>
         <div class="reg-group">
-            <input type="text" class="reg-input" placeholder="Имя">
+            <input type="text" class="reg-input" placeholder="Имя" name="userName">
         </div>
         <div class="reg-group">
-            <input type="text" class="reg-input" placeholder="Отчество">
+            <input type="text" class="reg-input" placeholder="Отчество" name="userSecondName">
         </div>
         <div class="reg-group">
-            <input type="email" class="reg-input" placeholder="E-mail">
+            <input type="email" class="reg-input" placeholder="E-mail" name="userEmail">
         </div>
         <div class="reg-group">
-            <input type="text" class="reg-input" placeholder="Телефон">
+            <input type="text" class="reg-input" placeholder="Телефон" name="userPhone">
         </div>
         <div class="reg-group">
-            <input type="password" class="reg-input" placeholder="Пароль">
+            <input type="password" class="reg-input" placeholder="Пароль" name="userPass">
         </div>
         <div class="reg-group">
             <input type="submit" class="reg-button" value="Регистрация">
         </div>
-    </div>
+    </form>
 </div>
 </body>
