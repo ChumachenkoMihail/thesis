@@ -2,12 +2,22 @@ const express = require('express');
 const hbs = require('hbs');
 const exphbs = require('express-handlebars');
 const routes = require('./routes/routes');
-const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const Database = require(__dirname + '/db');
+const mysql = require('mysql2');
+
 const app = express();
 const PORT = 3000;
 
-//Необходимо для работы body-parser и обработки форм
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+//директория со статическими файлами
+app.use(express.static(__dirname + '/public'));
+
+app.use(routes);
+app.use(cookieParser);
+
+
+
 
 //Для работы с шаблонизатором handlebars
 app.engine('hbs', exphbs(
@@ -25,11 +35,7 @@ hbs.registerPartials(__dirname + "/views/partials");
 app.set('view engine', 'hbs');
 app.set('views', 'views');
 
-//директория со статическими файлами
-app.use(express.static(__dirname + '/public'));
 
-
-app.use(routes);
 
 //На каком порту работает сервер
 app.listen(PORT, (err) =>{
@@ -38,5 +44,4 @@ app.listen(PORT, (err) =>{
     else
         console.log(`Server is running at ${PORT} port`);
 });
-
 

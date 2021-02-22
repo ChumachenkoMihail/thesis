@@ -8,6 +8,15 @@ body{
     font-family: 'Raleway', sans-serif;
     color: #ffffff;
 }
+a{
+    text-decoration: none;
+    color: white;
+    opacity: 0.7;
+}
+a:hover{
+    border-bottom: 1px solid white;
+    opacity: 1;
+}
 /* header styles*/
 .header-logo {
     display: inline-flex;
@@ -33,15 +42,6 @@ body{
     justify-content: space-around;
     align-items: center;
     font-size: larger;
-}
-.header-menu a.header-content{
-    text-decoration: none;
-    color: white;
-    opacity: 0.7;
-}
-.header-menu a.header-content:hover{
-    border-bottom: 1px solid white;
-    opacity: 1;
 }
 
 /* footer styles*/

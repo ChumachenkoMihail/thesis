@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const router = Router();
 const bodyParser = require('body-parser');
+const queries = require('../queries');
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -19,8 +20,27 @@ router.get('/registration', (req,res) =>{
 router.post('/registration', urlencodedParser, (req,res)=>{
     if(!req.body)
         return res.sendStatus(400);
-    console.log(req.body + "\n" + req.body.userName + "\n" + req.body.userSurname + "\n" + req.body.userSecondName);
-    res.render('registration.hbs');
+    let surname = req.body.userSurname.toString();
+    let name = req.body.userName.toString();
+    let lastname = req.body.userLastName.toString();
+    let email =req.body.userEmail.toString();
+    let pass = req.body.userPass.toString();
+    let phone = req.body.userPhone.toString();
+    queries.insertUserToDB(surname, name, lastname, email, phone, pass);
+    res.send('all is okay');
+
+})
+
+router.get('/account' ,(req,res) =>{
+    res.render('account.hbs',{
+    });
+});
+
+router.get('/signup', (req,res)=>{
+    res.render('signup.hbs',{
+        title : 'Войти'
+    })
+
 })
 
 module.exports = router;
