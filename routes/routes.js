@@ -43,4 +43,13 @@ router.get('/signup', (req,res)=>{
 
 })
 
+router.post('/signup', urlencodedParser, ((req, res) => {
+    if(!req.body)
+        return res.sendStatus(400);
+    let login = req.body.login.toString();
+    let password = req.body.password.toString();
+    queries.checkUser(login, password);
+    res.send('all is ok from login');
+    })
+)
 module.exports = router;
