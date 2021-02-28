@@ -1,8 +1,8 @@
 {
   "name": "thesis",
   "version": "1.0.0",
-  "description": "final thesis CHumachenko Mihail K17.1 Odessa, 2021",
-  "main": "index.js",
+  "description": "final thesis Chumachenko Mihail K17.1 Odessa, 2021",
+  "main": "src/index.js",
   "scripts": {
     "start": "node index",
     "dev": "nodemon index"

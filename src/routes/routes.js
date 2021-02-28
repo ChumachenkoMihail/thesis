@@ -9,6 +9,7 @@ router.get('/', (req,res)=>{
     res.render('index.hbs',{
         title : 'Коммунальные услуги'
     });
+
 });
 
 router.get('/registration', (req,res) =>{

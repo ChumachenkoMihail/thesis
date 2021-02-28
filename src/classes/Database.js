@@ -1,4 +1,5 @@
 const mysql = require('mysql2');
+const db = require('../../config');
 
 class Database{
 
@@ -16,7 +17,7 @@ class Database{
         });
     }
 
-   makeQuery(query,callback) {
+    makeQuery(query,callback) {
         this.connection.query(query, (err, result) => {
             if(err)
                 console.log('query error!!!' + err.message);
@@ -34,6 +35,6 @@ class Database{
     }
 }
 
-var database = new Database('localhost', 'root', 'thesis', '1111');
+const database = new Database(db.DATABASE_CONFIG.HOST, db.DATABASE_CONFIG.USER, db.DATABASE_CONFIG.DATABASE_NAME, db.DATABASE_CONFIG.PASSWORD);
 
 module.exports = database;

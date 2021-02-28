@@ -1,4 +1,4 @@
-const db = require(__dirname + '/db');
+const db = require('./classes/Database');
 const bcrypt = require('bcrypt');
 const salt = 10;
 
