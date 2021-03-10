@@ -45,12 +45,13 @@ const salt = 10;
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize(db.DATABASE_CONFIG.DATABASE_NAME, db.DATABASE_CONFIG.USER, db.DATABASE_CONFIG.PASSWORD, {
     dialect: 'mysql',
-    host: 'localhost'
+    host: 'localhost',
+    port: '3307'
 });
 
 const User = sequelize.define('user',{
     user_id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
@@ -92,7 +93,7 @@ const User = sequelize.define('user',{
 });
 
 sequelize.sync().then((result)=>{
-    console.log(result);
+    //console.log(result);
 });
 
 
@@ -108,7 +109,7 @@ function insertUser(surname, name, lastname, email, phone, password){
         telephone: phone,
         personal_account_id: 1
     }).then(res=>{
-        console.log(res);
+        console.log("Registration Succesfully!");
     }).catch(err=>{
         console.log(err);
     })
