@@ -2,6 +2,7 @@ const {Router} = require('express');
 const router = Router();
 const bodyParser = require('body-parser');
 const queries = require('../queries');
+const database = require('../classes/Database');
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -27,7 +28,7 @@ router.post('/registration', urlencodedParser, (req,res)=>{
     let email =req.body.userEmail.toString();
     let pass = req.body.userPass.toString();
     let phone = req.body.userPhone.toString();
-    queries.insertUserToDB(surname, name, lastname, email, phone, pass);
+    database.insertUser(surname, name, lastname, email, phone, pass);
     res.send('all is okay');
 
 })
@@ -49,7 +50,7 @@ router.post('/signup', urlencodedParser, ((req, res) => {
         return res.sendStatus(400);
     let login = req.body.login.toString();
     let password = req.body.password.toString();
-    queries.checkUser(login, password);
+    database.selectUser(login, password);
     res.send('all is ok from login');
     })
 )
