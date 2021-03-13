@@ -26,8 +26,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90f6adb6-3bf4-4529-80f7-75842a0c0a41" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/models/User.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/db-singleton.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/classes/Database.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/Database.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +99,9 @@
       <workItem from="1615270317478" duration="5545000" />
       <workItem from="1615315230481" duration="585000" />
       <workItem from="1615398173934" duration="4205000" />
-      <workItem from="1615408812053" duration="3174000" />
+      <workItem from="1615408812053" duration="14162000" />
+      <workItem from="1615453345427" duration="3237000" />
+      <workItem from="1615474182220" duration="3415000" />
     </task>
     <servers />
   </component>
