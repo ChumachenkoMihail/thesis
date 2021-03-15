@@ -1,44 +1,36 @@
 const sequelize = require('./db-singleton');
 const { DataTypes } = require('sequelize');
 
-const User = sequelize.define('user',{
-    user_id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false
-    },
-    surname: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    lastname: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    login: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    telephone: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
+const Personal_account = sequelize.define('personal_account',{
     personal_account_id: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        primaryKey: true,
+        allowNull: false,
+        autoIncrement: true
+    },
+    street: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    house: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    flat: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    square: {
+        type: DataTypes.DOUBLE,
+        allowNull: false
+    },
+    heated_square: {
+        type: DataTypes.DOUBLE,
+        allowNull: false
+    },
+    count_of_tenants: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 },{
     timestamps: false
@@ -46,4 +38,4 @@ const User = sequelize.define('user',{
 
 sequelize.sync().then((result)=>{});
 
-module.exports = User;
+module.exports = Personal_account;

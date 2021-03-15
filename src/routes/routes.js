@@ -26,22 +26,22 @@ router.get('/registration', (req,res) =>{
 router.post('/registration', urlencodedParser, (req,res)=>{
     if(!req.body)
         return res.sendStatus(400);
-    let surname = req.body.userSurname.toString();
-    let name = req.body.userName.toString();
-    let lastname = req.body.userLastName.toString();
-    let email =req.body.userEmail.toString();
-    let pass = req.body.userPass.toString();
-    let phone = req.body.userPhone.toString();
-
-    pass = bcrypt.hashSync(pass, salt);
+    // let surname = req.body.userSurname.toString();
+    // let name = req.body.userName.toString();
+    // let lastname = req.body.userLastName.toString();
+    // let email =req.body.userEmail.toString();
+    // let pass = req.body.userPass.toString();
+    // let phone = req.body.userPhone.toString();
+    const {userSurname, userName,userLastName, userEmail, userPass, userPhone} = req.body;
+    let hashed_pass = bcrypt.hashSync(userPass, salt);
     User.create({
-        surname: surname,
-        name: name,
-        lastname: lastname,
-        login: email,
-        password: pass,
-        email: email,
-        telephone: phone,
+        surname: userSurname,
+        name: userName,
+        lastname: userLastName,
+        login: userEmail,
+        password: hashed_pass,
+        email: userEmail,
+        telephone: userPhone,
         personal_account_id: 1
     }).then(res=>{
         console.log("Registration Succesfully!");

@@ -1,49 +1,37 @@
 const sequelize = require('./db-singleton');
 const { DataTypes } = require('sequelize');
 
-const User = sequelize.define('user',{
-    user_id: {
+const Tenants = sequelize.define('tenants', {
+    tenant_id: {
         type: DataTypes.INTEGER,
-        autoIncrement: true,
         primaryKey: true,
         allowNull: false
     },
-    surname: {
+    surname:{
         type: DataTypes.STRING,
         allowNull: false
     },
-    name: {
+    name:{
         type: DataTypes.STRING,
         allowNull: false
     },
-    lastname: {
+    lastname:{
         type: DataTypes.STRING,
         allowNull: false
     },
-    login: {
-        type: DataTypes.STRING,
+    percent_of_privileges:{
+        type: DataTypes.FLOAT,
         allowNull: false
     },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    telephone: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    personal_account_id: {
+    personal_account_id:{
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: false
     }
+
 },{
     timestamps: false
 });
 
 sequelize.sync().then((result)=>{});
 
-module.exports = User;
+module.exports = Services;
