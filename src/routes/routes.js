@@ -1,10 +1,9 @@
 const {Router} = require('express');
 const router = Router();
 const bodyParser = require('body-parser');
-const queries = require('../queries');
-const database = require('../classes/Database');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const cookie_parser = require('cookie-parser');
 const salt = 10;
 
 
@@ -26,12 +25,6 @@ router.get('/registration', (req,res) =>{
 router.post('/registration', urlencodedParser, (req,res)=>{
     if(!req.body)
         return res.sendStatus(400);
-    // let surname = req.body.userSurname.toString();
-    // let name = req.body.userName.toString();
-    // let lastname = req.body.userLastName.toString();
-    // let email =req.body.userEmail.toString();
-    // let pass = req.body.userPass.toString();
-    // let phone = req.body.userPhone.toString();
     const {userSurname, userName,userLastName, userEmail, userPass, userPhone} = req.body;
     let hashed_pass = bcrypt.hashSync(userPass, salt);
     User.create({
@@ -48,8 +41,7 @@ router.post('/registration', urlencodedParser, (req,res)=>{
     }).catch(err=>{
         console.log(err);
     })
-    //res.send('all is okay');
-    res.redirect('/');
+    res.redirect('/signup');
 })
 
 router.get('/account' ,(req,res) =>{
@@ -61,7 +53,17 @@ router.get('/signup', (req,res)=>{
     res.render('signup.hbs',{
         title : 'Войти'
     })
+})
 
+router.get('/about',(req,res)=>{
+    res.render('about.hbs',{
+        title: 'О компании'
+    })
+})
+router.get('/personal', isAuthenticated,(req,res)=>{
+    res.render('personal.hbs',{
+        title: 'Личный кабинет'
+    })
 })
 
 router.post('/signup', urlencodedParser, ((req, res) => {
@@ -75,29 +77,22 @@ router.post('/signup', urlencodedParser, ((req, res) => {
         //password: password
         }, raw: true}).then(findedUsers=>{
             if(findedUsers) {
-                console.log(findedUsers);
-                bcrypt.hash(req.body.password, salt).then(hash => {
-                    console.log(hash);
-                    console.log(req.body.password);
-                    console.log(req.body.password.toString());
-                    bcrypt.compare(req.body.password, findedUsers.password, function (err, result){
-                        if(result){
-                            console.log("Auth succesful!");
-                            return findedUsers;
-                        }
-                        else
-                            console.log('No User with this values1');
-                    })
-                })
+                console.log('Authenticated');
+                res.cookie('auth', 'true');
+                return res.redirect('/personal');
             }
             else
+                res.redirect('/signup');
                 console.log('No User with this values');
     }).catch(err=>{
         console.log(err);
     })
-    console.log("From auth");
-    //res.send('all is ok from login');
-    res.redirect('/');
     })
 )
+function isAuthenticated(req, res, next){
+    //const {cookies} = req;
+    if (req.cookies.auth === 'true'){
+        next();
+    }
+}
 module.exports = router;

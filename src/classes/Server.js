@@ -2,8 +2,8 @@ const express = require('express');
 const hbs = require('hbs');
 const exphbs = require('express-handlebars');
 const routes = require('../routes/routes');
+const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const Database = require('./Database');
 
 
 class Server {
@@ -16,6 +16,8 @@ class Server {
 
         this.app.use(routes);
         this.app.use(cookieParser);
+
+
 
         //Для работы с шаблонизатором handlebars
         this.app.engine('hbs', exphbs(
