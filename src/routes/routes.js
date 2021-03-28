@@ -56,6 +56,11 @@ router.get('/about',(req,res)=>{
     })
 })
 
+router.get('/logout',(req,res)=>{
+    res.clearCookie('auth');
+    res.redirect('/');
+})
+
 router.get('/personal',(req,res)=>{
     if(req.cookies.auth === 'true'){
         User.findOne({where:{

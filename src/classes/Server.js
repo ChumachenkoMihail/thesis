@@ -2,7 +2,6 @@ const express = require('express');
 const hbs = require('hbs');
 const exphbs = require('express-handlebars');
 const routes = require('../routes/routes');
-const session = require('express-session');
 const cookieParser = require('cookie-parser');
 
 
@@ -14,7 +13,14 @@ class Server {
         //Директория со статическими файлами
         this.app.use(express.static('src/public'));
 
+        
+
         this.app.use(cookieParser());
+        this.app.use((req,res,next)=>{
+            if(req.cookies.auth === 'true')
+                res.locals.authenticated = true;
+            next();
+        });
         this.app.use(routes);
 
         //Для работы с шаблонизатором handlebars

@@ -5,6 +5,10 @@
         <a href="/about" class="header-content">О компании</a>
         <a href="/faq" class="header-content">FAQ</a>
         <a href="/services" class="header-content">Услуги</a>
+        {{#if authenticated}}
+        <a href="/logout" class="header-content">Выйти</a>
+        {{else}}
         <a href="/signin" class="header-content">Войти</a>
+        {{/if}}
     </div>
 </header>
