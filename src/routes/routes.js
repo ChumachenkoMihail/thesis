@@ -37,20 +37,15 @@ router.post('/registration', urlencodedParser, (req,res)=>{
         telephone: userPhone,
         personal_account_id: 1
     }).then(res=>{
-        console.log("Registration Succesfully!");
+        console.log("Registration Successfully!");
     }).catch(err=>{
         console.log(err);
     })
-    res.redirect('/signup');
+    res.redirect('/signin');
 })
 
-router.get('/account' ,(req,res) =>{
-    res.render('account.hbs',{
-    });
-});
-
-router.get('/signup', (req,res)=>{
-    res.render('signup.hbs',{
+router.get('/signin', (req,res)=>{
+    res.render('signin.hbs',{
         title : 'Войти'
     })
 })
@@ -60,13 +55,29 @@ router.get('/about',(req,res)=>{
         title: 'О компании'
     })
 })
-router.get('/personal', isAuthenticated,(req,res)=>{
-    res.render('personal.hbs',{
-        title: 'Личный кабинет'
-    })
+
+router.get('/personal',(req,res)=>{
+    if(req.cookies.auth === 'true'){
+        User.findOne({where:{
+            user_id: req.cookies.user_id
+            }}).then(foundUser =>{
+                res.render('personal.hbs',{
+                    title: 'Личный кабинет',
+                    fullName: `${foundUser.name} ${foundUser.surname} ${foundUser.lastname}`
+                })
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+    else {
+        res.redirect('/signin');
+        alert('Something going wrong!');
+    }
+
+
 })
 
-router.post('/signup', urlencodedParser, ((req, res) => {
+router.post('/signin', urlencodedParser, ((req, res) => {
     if(!req.body)
         return res.sendStatus(400);
     let login = req.body.login.toString();
@@ -75,24 +86,20 @@ router.post('/signup', urlencodedParser, ((req, res) => {
     User.findOne({where:{
         login: login
         //password: password
-        }, raw: true}).then(findedUsers=>{
-            if(findedUsers) {
+        }, raw: true}).then(foundUser=>{
+            if(foundUser) {
                 console.log('Authenticated');
                 res.cookie('auth', 'true');
+                res.cookie('user_id', foundUser.user_id)
                 return res.redirect('/personal');
             }
             else
-                res.redirect('/signup');
+                res.redirect('/signin');
                 console.log('No User with this values');
     }).catch(err=>{
         console.log(err);
     })
     })
 )
-function isAuthenticated(req, res, next){
-    //const {cookies} = req;
-    if (req.cookies.auth === 'true'){
-        next();
-    }
-}
+
 module.exports = router;

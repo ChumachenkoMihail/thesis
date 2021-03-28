@@ -14,10 +14,8 @@ class Server {
         //Директория со статическими файлами
         this.app.use(express.static('src/public'));
 
+        this.app.use(cookieParser());
         this.app.use(routes);
-        this.app.use(cookieParser);
-
-
 
         //Для работы с шаблонизатором handlebars
         this.app.engine('hbs', exphbs(
