@@ -3,6 +3,9 @@
     padding: 0;
     text-decoration: none;
 }
+li{
+    list-style: none;
+}
 body{
     background: white;
     font-family: 'Verdana', serif;
@@ -34,7 +37,7 @@ a:hover{
 .header-menu {
     background-color: #efeded;
     display: grid;
-    grid-template-columns: repeat(6,1fr);
+    grid-template-columns: repeat(7,1fr);
     grid-gap: 1em;
     justify-content: center;
     align-items: center;
@@ -50,6 +53,25 @@ a:hover{
  }
 .header-content{
     font-size: large;
+}
+.header-content ul{
+    display: none;
+    position: absolute;
+    top: 50%;
+    background-color: #c4c2c2;
+    border-radius: 10px;
+    padding: 10px 5px;
+    margin-top: 4px;
+}
+.header-content ul li{
+   padding: 3px;
+}
+.header-content ul li:hover{
+    background-color: #e5e2e2;
+}
+.header-content:hover ul{
+    display: block;
+
 }
 
 /* footer styles*/
@@ -224,4 +246,23 @@ ul{
     text-align: center;
     margin-top: 50px;
     left: 39%;
+}
+
+/*enter values page*/
+
+.enter-table{
+    margin: 30px;
+    width: 100%;
+    height: 100%;
+}
+.enter-button{
+    background-color: #4c81c2;
+    border-radius: 10px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.table-grey{
+    background-color: #ccc5c6;
 }

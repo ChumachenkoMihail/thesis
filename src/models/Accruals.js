@@ -4,11 +4,14 @@ const { DataTypes } = require('sequelize');
 const Accruals = sequelize.define('accruals', {
     personal_account_id: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
         allowNull: false
     },
     service_id:{
         type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    data:{
+        type: DataTypes.STRING,
         allowNull: false
     },
     counter_value:{

@@ -3,7 +3,8 @@ const hbs = require('hbs');
 const exphbs = require('express-handlebars');
 const routes = require('../routes/routes');
 const cookieParser = require('cookie-parser');
-
+const bodyParser = require('body-parser');
+let urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 class Server {
     constructor(port) {
@@ -13,9 +14,10 @@ class Server {
         //Директория со статическими файлами
         this.app.use(express.static('src/public'));
 
-        
+
 
         this.app.use(cookieParser());
+        this.app.use(urlencodedParser);
         this.app.use((req,res,next)=>{
             if(req.cookies.auth === 'true')
                 res.locals.authenticated = true;

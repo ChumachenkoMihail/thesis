@@ -1,0 +1,29 @@
+<body>
+{{>header}}
+
+{{#if accruals}}
+    <h1 align="center">Электроэнергия</h1>
+    <hr>
+    <br>
+    <div style="width: 80%;" align="center">
+        <table border="1" cellspacing="0">
+            <tr align="center" valign="center">
+                <td>Дата внесения показаний</td>
+                <td>Показания</td>
+                <td>Сумма к оплате</td>
+            </tr>
+
+        {{#each accruals}}
+            <tr align="center" valign="center">
+                <td>{{data}}</td>
+                <td>{{counter_value}}</td>
+                <td>{{amount_to_pay}}</td>
+            </tr>
+        {{/each}}
+
+        </table>
+    </div>
+{{/if}}
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</body>

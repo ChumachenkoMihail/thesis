@@ -5,7 +5,8 @@ const Counter = sequelize.define('counter', {
     counter_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        allowNull: false
+        allowNull: false,
+        autoIncrement: true
     },
     personal_account_id:{
         type: DataTypes.INTEGER,

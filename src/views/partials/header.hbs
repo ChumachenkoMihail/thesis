@@ -6,9 +6,16 @@
         <a href="/faq" class="header-content">FAQ</a>
         <a href="/services" class="header-content">Услуги</a>
         {{#if authenticated}}
-        <a href="/logout" class="header-content">Выйти</a>
+            <qwe class="header-content">
+                <a href="/personal" class="header-content">Личный кабинет</a>
+                <ul class="header-submenu">
+                    <li><a href="/enter">Внести показания</a></li>
+                    <li><a href="/accruals">Статистика начислений</a></li>
+                </ul>
+            </qwe>
+            <a href="/logout" class="header-content">Выйти</a>
         {{else}}
-        <a href="/signin" class="header-content">Войти</a>
+            <a href="/signin" class="header-content">Войти</a>
         {{/if}}
     </div>
 </header>

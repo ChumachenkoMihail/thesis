@@ -11,7 +11,7 @@
         <ul>
             <li><a href="#">Мои объекты</a></li>
             <li><a href="#">Мои платежи</a></li>
-            <li><a href="#">Выйти</a></li>
+            <li><a href="/logout">Выйти</a></li>
         </ul>
     </div>
 </div>
@@ -20,9 +20,9 @@
 <div class="person_objects_row">
     <div class="person_object">
         <div class="obj_top" align="center">
-            Одесса, пр.Добровольского<br>
-            д. 151/1<br>
-            кв. 188<br>
+            {{street}}<br>
+            д. {{house}}<br>
+            кв. {{flat}}<br>
         </div>
         <div align="center">
             Показать историю <a href="#">начислений</a> / <a href="#">оплаты</a>

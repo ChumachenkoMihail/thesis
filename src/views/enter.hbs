@@ -1,0 +1,63 @@
+<body>
+{{>header}}
+<div style="width: 100%; height: 100%">
+    <form method="post" action="/enter">
+        <div align="center" class="enter-table">
+            <table border="1" cellspacing="0">
+                <tr align="center" valign="center" class="table-grey">
+                    <td rowspan="2">Послуга</td>
+                    <td rowspan="2">Початкове значення</td>
+                    <td rowspan="2">Заводський №</td>
+                    <td colspan="2">Останні показання</td>
+                    <td rowspan="2">Введіть нові показання</td>
+                </tr>
+                <tr align="center" valign="center" class="table-grey">
+                    <td>Дата</td>
+                    <td>Значення</td>
+                </tr>
+                <tr align="center" valign="center" >
+                    <td>Електроенергія</td>
+                    <td>1</td>
+                    <td>164239</td>
+                    <td>29.03.2021</td>
+                    <td>1000</td>
+                    <td><input type="text" name="electro"></td>
+                </tr>
+                <tr align="center" valign="center" class="table-grey">
+                    <td>Вода на підігрів</td>
+                    <td>1</td>
+                    <td>164239</td>
+                    <td>29.03.2021</td>
+                    <td>1000</td>
+                    <td><input type="text" name="heated_water" class="table-grey"></td>
+                </tr>
+                <tr align="center" valign="center" >
+                    <td>Вода питна</td>
+                    <td>1</td>
+                    <td>164239</td>
+                    <td>29.03.2021</td>
+                    <td>1000</td>
+                    <td><input type="text" name="water"></td>
+                </tr>
+                <tr align="center" valign="center" class="table-grey">
+                    <td>Газ</td>
+                    <td>1</td>
+                    <td>164239</td>
+                    <td>29.03.2021</td>
+                    <td>1000</td>
+                    <td><input type="text" name="gas" class="table-grey"></td>
+                </tr>
+                <tr align="center" valign="center">
+                    <td>Опалення</td>
+                    <td>1</td>
+                    <td>164239</td>
+                    <td>29.03.2021</td>
+                    <td>1000</td>
+                    <td><input type="text" name="heating"></td>
+                </tr>
+            </table>
+            <input type="submit" value="Занести показання" class="enter-button" align="center">
+        </div>
+    </form>
+</div>
+</body>

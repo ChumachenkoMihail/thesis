@@ -8,7 +8,7 @@ const Services = sequelize.define('services', {
         allowNull: false
     },
     service_type:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
     rate:{

@@ -34,4 +34,4 @@ const Tenants = sequelize.define('tenants', {
 
 sequelize.sync().then((result)=>{});
 
-module.exports = Services;
+module.exports = Tenants;
