@@ -245,6 +245,13 @@ router.get('/accruals', (req, res) => {
         alert('Something going wrong!');
     }
 })
+
+router.get('/ajax',((req, res) => {
+
+    console.log('ajax');
+    return res.json({'id':'1', 'something':'smt'});
+}))
+
 //need to finish this page
 router.get('/about',(req,res)=>{
     res.render('about.hbs',{
