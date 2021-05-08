@@ -4,7 +4,7 @@ const exphbs = require('express-handlebars');
 const routes = require('../routes/routes');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const CronJob = require('cron').CronJob;
+const komunalka = require('../cronjob/cron');
 let urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 class Server {
@@ -51,6 +51,7 @@ class Server {
             else
                 console.log(STARTUP_MESSAGE);
         });
+        komunalka.start();
     }
 }
 

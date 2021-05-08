@@ -28,12 +28,7 @@
     <list default="true" id="90f6adb6-3bf4-4529-80f7-75842a0c0a41" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/src/cronjob/cron.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/classes/Server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/Server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/css/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/accruals.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/accruals.hbs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +129,7 @@
       <workItem from="1620202779981" duration="1428000" />
       <workItem from="1620295087190" duration="15172000" />
       <workItem from="1620379522069" duration="12146000" />
-      <workItem from="1620466374707" duration="878000" />
+      <workItem from="1620466374707" duration="5006000" />
     </task>
     <task id="LOCAL-00001" summary="Added cookies and dynamic view of user name at /personal">
       <created>1616953151658</created>
@@ -164,7 +159,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620332200605</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="ajax done">
+      <created>1620483823956</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1620483823956</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,7 +201,8 @@
     <MESSAGE value="logout and dynamic header added" />
     <MESSAGE value="lot of improvements" />
     <MESSAGE value="ajax didn't work" />
-    <option name="LAST_COMMIT_MESSAGE" value="ajax didn't work" />
+    <MESSAGE value="ajax done" />
+    <option name="LAST_COMMIT_MESSAGE" value="ajax done" />
   </component>
   <component name="WindowStateProjectService">
     <state x="453" y="166" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1612771049021">
