@@ -26,7 +26,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90f6adb6-3bf4-4529-80f7-75842a0c0a41" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/cronjob/cron.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/classes/Server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/Server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/public/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/css/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/accruals.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/accruals.hbs" afterDir="false" />
     </list>
@@ -127,7 +132,9 @@
       <workItem from="1619506596301" duration="4013000" />
       <workItem from="1620130162073" duration="592000" />
       <workItem from="1620202779981" duration="1428000" />
-      <workItem from="1620295087190" duration="9336000" />
+      <workItem from="1620295087190" duration="15172000" />
+      <workItem from="1620379522069" duration="12146000" />
+      <workItem from="1620466374707" duration="878000" />
     </task>
     <task id="LOCAL-00001" summary="Added cookies and dynamic view of user name at /personal">
       <created>1616953151658</created>
@@ -150,7 +157,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620316719504</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="ajax didn't work">
+      <created>1620332200605</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1620332200605</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -184,7 +198,8 @@
     <MESSAGE value="Added cookies and dynamic view of user name at /personal" />
     <MESSAGE value="logout and dynamic header added" />
     <MESSAGE value="lot of improvements" />
-    <option name="LAST_COMMIT_MESSAGE" value="lot of improvements" />
+    <MESSAGE value="ajax didn't work" />
+    <option name="LAST_COMMIT_MESSAGE" value="ajax didn't work" />
   </component>
   <component name="WindowStateProjectService">
     <state x="453" y="166" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1612771049021">
@@ -207,9 +222,9 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="184" y="9" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1614516450001" />
-    <state x="346" y="49" key="search.everywhere.popup" timestamp="1618151800301">
+    <state x="346" y="49" key="search.everywhere.popup" timestamp="1620397122015">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1618151800301" />
+    <state x="346" y="49" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1620397122015" />
   </component>
 </project>

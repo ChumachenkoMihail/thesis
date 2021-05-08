@@ -225,20 +225,9 @@ router.post('/enter' ,(req, res) => {
 
 router.get('/accruals', (req, res) => {
     if(req.cookies.auth === 'true'){
-        Accruals.findAll({where:{
-                personal_account_id: req.cookies.user_id,
-                service_id: 1,
-            },raw: true}).then(foundAccruals =>{
-                console.log(foundAccruals);
-                //console.log(JSON.parse(foundAccruals));
-            res.render('accruals.hbs',{
-                title: 'Статистика начислений',
-                //accruals: JSON.stringify(foundAccruals)
-                //accruals: foundAccruals
-                accruals: foundAccruals
-            })
+        res.render('accruals.hbs',{
+            title: 'Статистика начислений',
         })
-
     }
     else{
         res.redirect('/signin');
@@ -247,9 +236,15 @@ router.get('/accruals', (req, res) => {
 })
 
 router.get('/ajax',((req, res) => {
-
-    console.log('ajax');
-    return res.json({'id':'1', 'something':'smt'});
+        let result;
+        Accruals.findAll({where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: req.query.value
+            }, raw: true}).then(foundAccruals => {
+            result = foundAccruals;
+        }).then(()=>{
+            res.json(result);
+        })
 }))
 
 //need to finish this page

@@ -4,6 +4,7 @@ const exphbs = require('express-handlebars');
 const routes = require('../routes/routes');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const CronJob = require('cron').CronJob;
 let urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 class Server {

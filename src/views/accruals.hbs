@@ -2,40 +2,21 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {{>header}}
 
-{{#if accruals}}
     <h1 align="center" id="head"></h1>
     <hr>
-    <br>
     <select id="sel" name="sel">
-        <option value="">Електроенергія</option>
-        <option value="2">Опалення</option>
-        <option value="3">Водопостачання</option>
-        <option value="4">Злив води</option>
-        <option value="5">Ліфт</option>
-        <option value="6">Газ</option>
-        <option value="7">Поставка газу</option>
-        <option value="8">Вивіз сміття</option>
+        <option value="1" selected>Електроенергія</option>
+        <option value="5">Опалення</option>
+        <option value="4">Водопостачання</option>
+        <option value="6">Водовідведення</option>
+        <option value="0">Ліфт</option>
+        <option value="2">Газ</option>
+        <option value="3">Поставка газу</option>
+        <option value="7">Вивіз сміття</option>
+        <option value="8">Домофон</option>
+
     </select>
 
-    <div style="width: 80%;" align="center">
-        <table border="1" cellspacing="0">
-            <tr align="center" valign="center">
-                <td>Дата внесения показаний</td>
-                <td>Показания</td>
-                <td>Сумма к оплате</td>
-            </tr>
-
-        {{#each accruals}}
-            <tr align="center" valign="center">
-                <td>{{data}}</td>
-                <td>{{counter_value}}</td>
-                <td>{{amount_to_pay}}</td>
-            </tr>
-        {{/each}}
-
-        </table>
-    </div>
-{{/if}}
 
 
 <script>
@@ -49,19 +30,39 @@
         const head = document.querySelector('[id="head"]');
         head.textContent = desc;
 
-        fetch('/ajax')
+        let url = '/ajax?value=' + value;
+        fetch(url)
         .then(res => {
-            console.log('ajaaaaaaaaaaaaaaaaax!');
             return res.json();
         })
         .then(data => {
-            console.log('3');
-            console.log(data);
+            const table = document.querySelector('[id="tab"]');
+            let str = "";
+            str = `<table border="1" cellspacing="0" class="accruals_table">
+            <tr align="center" valign="center">
+                <td>Дата внесения показаний</td>
+                <td>Показания</td>
+                <td>Сумма к оплате</td>
+            </tr>`;
+            for(key in data){
+                str += `<tr align="center" valign="center">
+                                           <td>${data[key].data}</td>
+                                           <td>${data[key].counter_value}</td>
+                                           <td>${data[key].amount_to_pay}</td>
+                                      </tr>`;
+
+            }
+            str += "</table>"
+            tab.innerHTML = str;
         })
         .catch(err => {
             console.log(err);
         })
     });
 </script>
+
+<div id="tab">
+
+</div>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 </body>
