@@ -50,7 +50,8 @@ let komunalka = new CronJob('0 1 0 1 * *', function (){
                                 service_id: 7,
                                 data: data,
                                 counter_value: 0,
-                                amount_to_pay: vivoz_musora
+                                amount_to_pay: vivoz_musora,
+                                paid: 'false'
                             })
                         })
                 })
@@ -62,7 +63,8 @@ let komunalka = new CronJob('0 1 0 1 * *', function (){
                             service_id: 8,
                             data: data,
                             counter_value: 0,
-                            amount_to_pay: service.rate * previleges
+                            amount_to_pay: service.rate * previleges,
+                            paid: 'false'
                         })
                     })
                 //СДПТ
@@ -74,7 +76,8 @@ let komunalka = new CronJob('0 1 0 1 * *', function (){
                             service_id: 9,
                             data: data,
                             counter_value: 0,
-                            amount_to_pay: sdpt_to_pay
+                            amount_to_pay: sdpt_to_pay,
+                            paid: 'false'
                         })
                     })
                 //Отопление
@@ -87,17 +90,13 @@ let komunalka = new CronJob('0 1 0 1 * *', function (){
                                 service_id: 5,
                                 data: data,
                                 counter_value: 0,
-                                amount_to_pay: heating_to_pay
+                                amount_to_pay: heating_to_pay,
+                                paid: 'false'
                             })
                         })
                 }
             }
     })
-
-
-
-
-
 },null,true,'Europe/Kiev')
 
 module.exports = komunalka;

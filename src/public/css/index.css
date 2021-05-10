@@ -57,7 +57,7 @@ a:hover{
 .header-content ul{
     display: none;
     position: absolute;
-    top: 50%;
+    top: 48%;
     background-color: #c4c2c2;
     border-radius: 10px;
     padding: 10px 5px;

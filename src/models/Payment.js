@@ -7,12 +7,16 @@ const Payment = sequelize.define('payment', {
         primaryKey: true,
         allowNull: false
     },
-    counter_id:{
+    personal_account_id:{
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    service_id:{
+        type: DataTypes.INTEGER,
+        allowNull:false
+    },
     date:{
-        type: DataTypes.DATEONLY,
+        type: DataTypes.STRING,
         allowNull: false
     },
     amount_paid:{

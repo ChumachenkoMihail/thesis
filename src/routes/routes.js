@@ -123,8 +123,10 @@ router.get('/enter', (req,res)=>{
             }
         })
             .then(found_counter => {
-                electro_start_value = found_counter.start_value;
-                electro_counter_number = found_counter.counter_number;
+                if(found_counter) {
+                    electro_start_value = found_counter.start_value;
+                    electro_counter_number = found_counter.counter_number;
+                }
             })
             .then(() => {
                 return Accruals.max('counter_value', {
@@ -144,8 +146,10 @@ router.get('/enter', (req,res)=>{
                 })
             })
             .then(last_accrual => {
-                electro_date = last_accrual.data;
-                electro_last_value = last_accrual.counter_value;
+                if(last_accrual) {
+                    electro_date = last_accrual.data;
+                    electro_last_value = last_accrual.counter_value;
+                }
             })
             .then(()=>{
                 return Counter.findOne({
@@ -156,8 +160,10 @@ router.get('/enter', (req,res)=>{
                 })
             })
             .then(found_water_counter => {
-                water_start_value = found_water_counter.start_value;
-                water_counter_number = found_water_counter.counter_number;
+                if(found_water_counter) {
+                    water_start_value = found_water_counter.start_value;
+                    water_counter_number = found_water_counter.counter_number;
+                }
             })
             .then(()=>{
                 return Accruals.max('counter_value', {
@@ -177,8 +183,10 @@ router.get('/enter', (req,res)=>{
                 })
             })
             .then(last_water_accrual => {
-                water_date = last_water_accrual.data;
-                water_last_value = last_water_accrual.counter_value;
+                if(last_water_accrual) {
+                    water_date = last_water_accrual.data;
+                    water_last_value = last_water_accrual.counter_value;
+                }
             })
             .then(()=>{
                 return Counter.findOne({
@@ -189,8 +197,10 @@ router.get('/enter', (req,res)=>{
                 })
             })
             .then(found_gas_counter => {
-                gas_start_value = found_gas_counter.start_value;
-                gas_counter_number = found_gas_counter.counter_number;
+                if(found_gas_counter) {
+                    gas_start_value = found_gas_counter.start_value;
+                    gas_counter_number = found_gas_counter.counter_number;
+                }
             })
             .then(()=>{
                 return Accruals.max('counter_value', {
@@ -210,8 +220,10 @@ router.get('/enter', (req,res)=>{
                 })
             })
             .then(last_gas_accrual => {
-                gas_date = last_gas_accrual.data;
-                gas_last_value = last_gas_accrual.counter_value;
+                if(last_gas_accrual) {
+                    gas_date = last_gas_accrual.data;
+                    gas_last_value = last_gas_accrual.counter_value;
+                }
             })
             .then(() => {
                 res.render('enter.hbs', {
@@ -301,7 +313,8 @@ router.post('/enter' ,(req, res) => {
                             service_id: 1,
                             data: data,
                             counter_value: electro,
-                            amount_to_pay: to_pay
+                            amount_to_pay: to_pay,
+                            paid: 'false'
                         }).catch(err => {
                             console.log('Invalid Accrual');
                         });
@@ -345,7 +358,8 @@ router.post('/enter' ,(req, res) => {
                                 service_id: 2,
                                 data: data,
                                 counter_value: gas,
-                                amount_to_pay: to_pay
+                                amount_to_pay: to_pay,
+                                paid: 'false'
                             }).catch(console.log)
                     }).then(()=>{
                         Services.findOne({where: {
@@ -358,7 +372,8 @@ router.post('/enter' ,(req, res) => {
                                     service_id: 3,
                                     data: data,
                                     counter_value: gas,
-                                    amount_to_pay: to_pay_postavka
+                                    amount_to_pay: to_pay_postavka,
+                                    paid: 'false'
                                 }).catch('Не прошла поставка газа начисление');
                         }).catch('Не прошел запрос к БД вынуть поставку газа');
                     })
@@ -397,7 +412,8 @@ router.post('/enter' ,(req, res) => {
                                 service_id: 4,
                                 data: data,
                                 counter_value: water,
-                                amount_to_pay: to_pay
+                                amount_to_pay: to_pay,
+                                paid: 'false'
                             }).catch(console.log)
                     })
                 })
@@ -419,7 +435,7 @@ router.get('/accruals', (req, res) => {
     }
 })
 
-router.get('/ajax',((req, res) => {
+router.get('/ajax',(req, res) => {
         let result;
         Accruals.findAll({where:{
                 personal_account_id: req.cookies.user_id,
@@ -429,7 +445,13 @@ router.get('/ajax',((req, res) => {
         }).then(()=>{
             res.json(result);
         })
-}))
+})
+
+router.get('/pay', (req, res) => {
+    res.render('pay.hbs',{
+        title: 'Оберіть послугу'
+    })
+})
 
 //TODO: need to finish this page
 router.get('/about',(req,res)=>{

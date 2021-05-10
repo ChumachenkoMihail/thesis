@@ -21,6 +21,10 @@ const Accruals = sequelize.define('accruals', {
     amount_to_pay:{
         type: DataTypes.FLOAT,
         allowNull: false
+    },
+    paid:{
+        type: DataTypes.STRING,
+        allowNull: false
     }
 },{
     timestamps: false
