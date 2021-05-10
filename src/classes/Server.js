@@ -43,7 +43,10 @@ class Server {
         this.app.set('views', 'src/views');
     }
     start(){
-        const STARTUP_MESSAGE = `Server is running at ${this.port} port`;
+        let data = new Date();
+        let hh = String(data.getHours());
+        let mm = String(data.getMinutes());
+        const STARTUP_MESSAGE = `Server is running at ${this.port} port. TIME: ${hh}:${mm}`;
 
         this.app.listen(this.port , (err) => {
             if(err)

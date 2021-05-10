@@ -22,6 +22,19 @@ let komunalka = new CronJob('0 1 0 1 * *', function (){
                 let yyyy = String(today.getFullYear());
                 let data = dd + '.' + mm + '.' + yyyy;
 
+                let previleges;
+
+                Tenants.findAll({where:{
+                    personal_account_id: foundAccounts[key].personal_account_id
+                    }}).then(tenants => {
+                        let c_of_tenants = 0;
+                        let percent = 0;
+                        for(k in tenants){
+                            c_of_tenants++;
+                            percent += tenants[k].percent_of_privileges;
+                        }
+                        previleges = percent / c_of_tenants;
+                })
                 //вывоз мусора
                 Tenants.count({
                     where: {
@@ -30,7 +43,7 @@ let komunalka = new CronJob('0 1 0 1 * *', function (){
                 }).then(countOfTenants =>{
                     Services.findOne({where:{service_id:7}})
                         .then(service => {
-                            vivoz_musora = countOfTenants * service.rate;
+                            vivoz_musora = countOfTenants * service.rate * previleges;
 
                             Accruals.create({
                                 personal_account_id: foundAccounts[key].personal_account_id,
@@ -49,13 +62,13 @@ let komunalka = new CronJob('0 1 0 1 * *', function (){
                             service_id: 8,
                             data: data,
                             counter_value: 0,
-                            amount_to_pay: service.rate
+                            amount_to_pay: service.rate * previleges
                         })
                     })
                 //СДПТ
                 Services.findOne({where:{service_id:9}})
                     .then(service => {
-                        let sdpt_to_pay = service.rate * foundAccounts[key].square;
+                        let sdpt_to_pay = service.rate * foundAccounts[key].square * previleges;
                         Accruals.create({
                             personal_account_id: foundAccounts[key].personal_account_id,
                             service_id: 9,
@@ -68,7 +81,7 @@ let komunalka = new CronJob('0 1 0 1 * *', function (){
                 if(month === 1 || month === 2 || month === 3 || month === 11 || month === 12) {
                     Services.findOne({where: {service_id: 5}})
                         .then(service => {
-                            let heating_to_pay = service.rate * foundAccounts[key].square;
+                            let heating_to_pay = service.rate * foundAccounts[key].square * previleges;
                             Accruals.create({
                                 personal_account_id: foundAccounts[key].personal_account_id,
                                 service_id: 5,

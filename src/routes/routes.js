@@ -113,9 +113,124 @@ router.get('/personal',(req,res)=>{
 
 router.get('/enter', (req,res)=>{
     if(req.cookies.auth === 'true'){
-        res.render('enter.hbs',{
-            title: 'Внести показания'
+        let electro_start_value = 0, electro_counter_number = "", electro_date = "", electro_last_value = 1;
+        let gas_start_value = 0, gas_counter_number = "", gas_date = "", gas_last_value = 1;
+        let water_start_value = 0, water_counter_number = "", water_date = "", water_last_value = 1;
+        Counter.findOne({
+            where: {
+                personal_account_id: req.cookies.user_id,
+                service_id: 1
+            }
         })
+            .then(found_counter => {
+                electro_start_value = found_counter.start_value;
+                electro_counter_number = found_counter.counter_number;
+            })
+            .then(() => {
+                return Accruals.max('counter_value', {
+                    where: {
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 1
+                    }
+                });
+            })
+            .then(last_accrual_value => {
+                return Accruals.findOne({
+                    where: {
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 1,
+                        counter_value: last_accrual_value
+                    }
+                })
+            })
+            .then(last_accrual => {
+                electro_date = last_accrual.data;
+                electro_last_value = last_accrual.counter_value;
+            })
+            .then(()=>{
+                return Counter.findOne({
+                    where:{
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 4
+                    }
+                })
+            })
+            .then(found_water_counter => {
+                water_start_value = found_water_counter.start_value;
+                water_counter_number = found_water_counter.counter_number;
+            })
+            .then(()=>{
+                return Accruals.max('counter_value', {
+                    where: {
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 4
+                    }
+                });
+            })
+            .then(last_water_accural_value=>{
+                return Accruals.findOne({
+                    where: {
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 4,
+                        counter_value: last_water_accural_value
+                    }
+                })
+            })
+            .then(last_water_accrual => {
+                water_date = last_water_accrual.data;
+                water_last_value = last_water_accrual.counter_value;
+            })
+            .then(()=>{
+                return Counter.findOne({
+                    where:{
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 2
+                    }
+                })
+            })
+            .then(found_gas_counter => {
+                gas_start_value = found_gas_counter.start_value;
+                gas_counter_number = found_gas_counter.counter_number;
+            })
+            .then(()=>{
+                return Accruals.max('counter_value', {
+                    where: {
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 2
+                    }
+                });
+            })
+            .then(last_gas_accural_value=>{
+                return Accruals.findOne({
+                    where: {
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 2,
+                        counter_value: last_gas_accural_value
+                    }
+                })
+            })
+            .then(last_gas_accrual => {
+                gas_date = last_gas_accrual.data;
+                gas_last_value = last_gas_accrual.counter_value;
+            })
+            .then(() => {
+                res.render('enter.hbs', {
+                    title: 'Внести показания',
+                    electro_start_value: electro_start_value,
+                    electro_counter_number: electro_counter_number,
+                    electro_date: electro_date,
+                    electro_last_value: electro_last_value,
+                    water_start_value: water_start_value,
+                    water_counter_number: water_counter_number,
+                    water_date: water_date,
+                    water_last_value: water_last_value,
+                    gas_start_value: gas_start_value,
+                    gas_counter_number: gas_counter_number,
+                    gas_date: gas_date,
+                    gas_last_value: gas_last_value
+                })
+            })
+            .catch(console.log);
     }
     else{
         res.redirect('/signin');
@@ -123,104 +238,173 @@ router.get('/enter', (req,res)=>{
     }
 })
 
-
 router.post('/enter' ,(req, res) => {
     if(!req.body) return res.sendStatus(400);
 
-    const {electro, gas, water, heating} = req.body;
-    let electro_rate, gas_rate, water_rate, heating_rate;
+    const {electro, gas, water} = req.body;
+    let electro_rate, gas_rate, water_rate, postavka_gasa_rate;
 
     let today = new Date();
     let dd = String(today.getDate());
     let mm = String(today.getMonth()+1);
     let yyyy = String(today.getFullYear());
     let data = dd + '.' + mm + '.' + yyyy;
-    if(electro) {
-        Services.findOne({
-            where: {
-                service_id: 1
-            }
-        }).then(found_service => {
-            electro_rate = found_service.rate;
-            let to_pay = electro * electro_rate;
 
-            Accruals.create({
+    let previleges = 1;
+
+    let ten = new Promise((resolve, reject) => {
+        Tenants.findAll({where:{
+                personal_account_id: req.cookies.user_id
+            }}).then(tenants => {
+            let c_of_tenants = 0;
+            let percent = 0;
+            for(k in tenants){
+                c_of_tenants++;
+                percent += tenants[k].percent_of_privileges;
+
+            }
+            previleges = percent / c_of_tenants;
+            resolve();
+        })
+    })
+    ten.then(()=>{
+        if(electro) { //Электроенергия
+            let prev_electro = 0;
+            Counter.findOne({where:{
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 1
+                }}).then(start => {
+                    prev_electro = start.start_value;
+            }).then(()=>{
+                let p = new Promise(((resolve, reject) => {
+                    Accruals.max('counter_value',{where: {
+                            service_id: 1,
+                            personal_account_id: req.cookies.user_id
+                        }})
+                        .then(foundAccrual => {
+                            if(foundAccrual){
+                                prev_electro = foundAccrual;
+                            }
+                        }).catch(()=>{console.log('previous accrual not found')})
+                    resolve();
+                }))
+                p.then(()=>{
+                    Services.findOne({
+                        where: {
+                            service_id: 1
+                        }
+                    }).then(found_service => {
+                        electro_rate = found_service.rate;
+                        let to_pay = (electro - prev_electro) * electro_rate * previleges;
+                        Accruals.create({
+                            personal_account_id: req.cookies.user_id,
+                            service_id: 1,
+                            data: data,
+                            counter_value: electro,
+                            amount_to_pay: to_pay
+                        }).catch(err => {
+                            console.log('Invalid Accrual');
+                        });
+
+                    }).catch('Invalid service found');
+                })
+            })
+
+
+
+        }
+
+        if(gas){
+            let prev_gas = 0;
+            Counter.findOne({where: {
                 personal_account_id: req.cookies.user_id,
-                service_id: 1,
-                data: data,
-                counter_value: electro,
-                amount_to_pay: to_pay
-            }).catch(err => {
-                console.log(err);
-            });
+                    service_id: 2
+                }}).then(start => {
+                    prev_gas = start.start_value;
+            }).then(()=>{
+                let p = new Promise(((resolve, reject) => {
+                    Accruals.max('counter_value',{where: {
+                            service_id: 2,
+                            personal_account_id: req.cookies.user_id
+                        }})
+                        .then(foundAccrual => {
+                            if(foundAccrual){
+                                prev_gas = foundAccrual;
+                            }
+                        }).catch(()=>{console.log('previous accrual not found')})
+                    resolve();
+                }))
+                p.then(()=>{
+                    Services.findOne({where:{
+                        service_id: 2
+                        }}).then(found_service =>{
+                            gas_rate = found_service.rate;
+                            let to_pay = gas* gas_rate * previleges;
+                            Accruals.create({
+                                personal_account_id: req.cookies.user_id,
+                                service_id: 2,
+                                data: data,
+                                counter_value: gas,
+                                amount_to_pay: to_pay
+                            }).catch(console.log)
+                    }).then(()=>{
+                        Services.findOne({where: {
+                            service_id: 3
+                            }}).then(found_postavka => {
+                                postavka_gasa_rate = found_postavka.rate;
+                                let to_pay_postavka = gas * postavka_gasa_rate * previleges;
+                                Accruals.create({
+                                    personal_account_id: req.cookies.user_id,
+                                    service_id: 3,
+                                    data: data,
+                                    counter_value: gas,
+                                    amount_to_pay: to_pay_postavka
+                                }).catch('Не прошла поставка газа начисление');
+                        }).catch('Не прошел запрос к БД вынуть поставку газа');
+                    })
+                })
+            })
+        }
 
-        }).catch(console.log);
-    }
-
-    if(gas){
-        Services.findOne({
-            where:{
-                service_id: 2
-            }
-        }).then(found_service => {
-            gas_rate = found_service.rate;
-            let to_pay = gas * gas_rate;
-
-            Accruals.create({
-                personal_account_id: req.cookie.user_id,
-                service_id: 2,
-                data: data,
-                counter_value: gas,
-                amount_to_pay: to_pay
-            }).catch(console.log)
-            }
-
-        ).catch(console.log);
-    }
-
-    if(water){
-        Services.findOne({
-            where:{
-                service_id: 4
-            }
-        }).then(found_service => {
-                water_rate = found_service.rate;
-                let to_pay = water * water_rate;
-
-                Accruals.create({
-                    personal_account_id: req.cookie.user_id,
-                    service_id: 4,
-                    data: data,
-                    counter_value: water,
-                    amount_to_pay: to_pay
-                }).catch(console.log)
-            }
-
-        ).catch(console.log);
-    }
-
-    if(heating){
-        Services.findOne({
-            where:{
-                service_id: 5
-            }
-        }).then(found_service => {
-                heating_rate = found_service.rate;
-                let to_pay = heating * heating_rate;
-
-                Accruals.create({
-                    personal_account_id: req.cookie.user_id,
-                    service_id: 5,
-                    data: data,
-                    counter_value: heating,
-                    amount_to_pay: to_pay
-                }).catch(console.log)
-            }
-
-        ).catch(console.log);
-    }
-    res.redirect('/personal');
-
+        if(water){
+            let prev_water = 0;
+            Counter.findOne({where: {
+                personal_account_id: req.cookies.user_id,
+                    service_id: 4
+                }}).then(start => {
+                    prev_water = start.start_value;
+            }).then(()=>{
+                let p = new Promise(((resolve, reject) => {
+                    Accruals.max('counter_value',{where: {
+                            service_id: 4,
+                            personal_account_id: req.cookies.user_id
+                        }})
+                        .then(foundAccrual => {
+                            if(foundAccrual){
+                                prev_water = foundAccrual;
+                            }
+                        }).catch(()=>{console.log('previous accrual not found')})
+                    resolve();
+                }))
+                p.then(()=>{
+                    Services.findOne({where:{
+                        service_id: 4
+                        }}).then(found_service => {
+                            water_rate = found_service.rate;
+                            let to_pay = water * water_rate * previleges;
+                            Accruals.create({
+                                personal_account_id: req.cookies.user_id,
+                                service_id: 4,
+                                data: data,
+                                counter_value: water,
+                                amount_to_pay: to_pay
+                            }).catch(console.log)
+                    })
+                })
+            })
+        }
+        res.redirect('/personal');
+    })
 })
 
 router.get('/accruals', (req, res) => {
@@ -247,7 +431,7 @@ router.get('/ajax',((req, res) => {
         })
 }))
 
-//need to finish this page
+//TODO: need to finish this page
 router.get('/about',(req,res)=>{
     res.render('about.hbs',{
         title: 'О компании'

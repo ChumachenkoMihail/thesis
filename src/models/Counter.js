@@ -19,6 +19,10 @@ const Counter = sequelize.define('counter', {
     service_id:{
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    counter_number:{
+        type: DataTypes.STRING,
+        allowNull: false
     }
 },{
     timestamps: false

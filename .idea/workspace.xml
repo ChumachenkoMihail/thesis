@@ -26,9 +26,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90f6adb6-3bf4-4529-80f7-75842a0c0a41" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/cronjob/cron.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/classes/Server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/Server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cronjob/cron.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/cronjob/cron.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Counter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Counter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/accruals.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/accruals.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/enter.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/enter.hbs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +75,16 @@
       <recent name="D:\thesis\src" />
       <recent name="D:\thesis\public\images" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="routes.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/src/routes/routes.js" working-dir="$PROJECT_DIR$/src/routes">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.routes.js" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -129,7 +143,9 @@
       <workItem from="1620202779981" duration="1428000" />
       <workItem from="1620295087190" duration="15172000" />
       <workItem from="1620379522069" duration="12146000" />
-      <workItem from="1620466374707" duration="5006000" />
+      <workItem from="1620466374707" duration="6355000" />
+      <workItem from="1620551781786" duration="14910000" />
+      <workItem from="1620641169859" duration="16510000" />
     </task>
     <task id="LOCAL-00001" summary="Added cookies and dynamic view of user name at /personal">
       <created>1616953151658</created>
@@ -166,7 +182,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620483823956</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="cron komunalka added">
+      <created>1620491611003</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1620491611003</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -202,7 +225,8 @@
     <MESSAGE value="lot of improvements" />
     <MESSAGE value="ajax didn't work" />
     <MESSAGE value="ajax done" />
-    <option name="LAST_COMMIT_MESSAGE" value="ajax done" />
+    <MESSAGE value="cron komunalka added" />
+    <option name="LAST_COMMIT_MESSAGE" value="cron komunalka added" />
   </component>
   <component name="WindowStateProjectService">
     <state x="453" y="166" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1612771049021">
