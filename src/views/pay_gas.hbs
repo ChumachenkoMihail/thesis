@@ -1,0 +1,45 @@
+<body>
+{{>header}}
+
+<h1 align="center">Газ та поставка газу</h1>
+<hr>
+<div>
+    <table border="1" cellspacing="0">
+
+        <tr align="center" valign="center">
+            <td>Дата</td>
+            <td>Покази лічильника</td>
+            <td>До сплати</td>
+        </tr>
+        <tr align="center" valign="center">
+            <td colspan="3"><b>Газ</b></td>
+        </tr>
+        {{#each found_gas_accruals}}
+            <tr align="center" valign="center">
+                <td>{{data}}</td>
+                <td>{{counter_value}}</td>
+                <td>{{amount_to_pay}}</td>
+            </tr>
+        {{/each}}
+        <tr align="center" valign="center">
+            <td colspan="3"><b>Поставка газу</b></td>
+        </tr>
+        {{#each found_postavka_gasa_accrual}}
+            <tr align="center" valign="center">
+                <td>{{data}}</td>
+                <td>{{counter_value}}</td>
+                <td>{{amount_to_pay}}</td>
+            </tr>
+        {{/each}}
+        <tr>
+            <td>Всьго:</td>
+            <td></td>
+            <td>{{total}}</td>
+        </tr>
+
+    </table>
+    <form method="post" action="/pay/gas">
+        <input type="submit" class="reg-button" value="Сплатити">
+    </form>
+</div>
+</body>

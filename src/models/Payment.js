@@ -4,7 +4,6 @@ const { DataTypes } = require('sequelize');
 const Payment = sequelize.define('payment', {
     user_id: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
         allowNull: false
     },
     personal_account_id:{

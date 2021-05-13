@@ -1,0 +1,31 @@
+<body>
+{{>header}}
+
+<h1 align="center">Водорозподіл</h1>
+<hr>
+<div>
+    <table border="1" cellspacing="0">
+        <tr align="center" valign="center">
+            <td>Дата</td>
+            <td>Покази лічильника</td>
+            <td>До сплати</td>
+        </tr>
+        {{#each accruals}}
+            <tr align="center" valign="center">
+                <td>{{data}}</td>
+                <td>{{counter_value}}</td>
+                <td>{{amount_to_pay}}</td>
+            </tr>
+        {{/each}}
+        <tr>
+            <td>Всьго:</td>
+            <td></td>
+            <td>{{total}}</td>
+        </tr>
+
+    </table>
+    <form method="post" action="/pay/voda">
+        <input type="submit" class="reg-button" value="Сплатити">
+    </form>
+</div>
+</body>

@@ -1,0 +1,105 @@
+<body>
+{{>header}}
+
+<h1 align="center">Оплата</h1>
+<hr>
+<div>
+    <table border="1" cellspacing="0">
+
+        <tr align="center" valign="center">
+            <td>Дата</td>
+            <td>Покази лічильника</td>
+            <td>До сплати</td>
+        </tr>
+        <tr align="center" valign="center">
+            <td colspan="3"><b>Електроенергія</b></td>
+        </tr>
+        {{#each svet_accrual}}
+            <tr align="center" valign="center">
+                <td>{{data}}</td>
+                <td>{{counter_value}}</td>
+                <td>{{amount_to_pay}}</td>
+            </tr>
+        {{/each}}
+        <tr align="center" valign="center">
+            <td colspan="3"><b>Газ</b></td>
+        </tr>
+        {{#each gas_accrual}}
+            <tr align="center" valign="center">
+                <td>{{data}}</td>
+                <td>{{counter_value}}</td>
+                <td>{{amount_to_pay}}</td>
+            </tr>
+        {{/each}}
+        <tr align="center" valign="center">
+            <td colspan="3"><b>Поставка газу</b></td>
+        </tr>
+        {{#each postavka_gasa_accrual}}
+            <tr align="center" valign="center">
+                <td>{{data}}</td>
+                <td>{{counter_value}}</td>
+                <td>{{amount_to_pay}}</td>
+            </tr>
+        {{/each}}
+        <tr align="center" valign="center">
+            <td colspan="3"><b>Водорозподіл</b></td>
+        </tr>
+        {{#each water_accrual}}
+            <tr align="center" valign="center">
+                <td>{{data}}</td>
+                <td>{{counter_value}}</td>
+                <td>{{amount_to_pay}}</td>
+            </tr>
+        {{/each}}
+        <tr align="center" valign="center">
+            <td colspan="3"><b>Опалення</b></td>
+        </tr>
+        {{#each otoplenie_accrual}}
+            <tr align="center" valign="center">
+                <td>{{data}}</td>
+                <td>{{counter_value}}</td>
+                <td>{{amount_to_pay}}</td>
+            </tr>
+        {{/each}}
+        <tr align="center" valign="center">
+            <td colspan="3"><b>Вивіз сміття</b></td>
+        </tr>
+        {{#each musor_accrual}}
+            <tr align="center" valign="center">
+                <td>{{data}}</td>
+                <td>{{counter_value}}</td>
+                <td>{{amount_to_pay}}</td>
+            </tr>
+        {{/each}}
+        <tr align="center" valign="center">
+            <td colspan="3"><b>Домофон</b></td>
+        </tr>
+        {{#each domofon_accrual}}
+            <tr align="center" valign="center">
+                <td>{{data}}</td>
+                <td>{{counter_value}}</td>
+                <td>{{amount_to_pay}}</td>
+            </tr>
+        {{/each}}
+        <tr align="center" valign="center">
+            <td colspan="3"><b>Послуга з управління домом</b></td>
+        </tr>
+        {{#each sdpt_accrual}}
+            <tr align="center" valign="center">
+                <td>{{data}}</td>
+                <td>{{counter_value}}</td>
+                <td>{{amount_to_pay}}</td>
+            </tr>
+        {{/each}}
+        <tr>
+            <td>Всьго:</td>
+            <td></td>
+            <td>{{total}}</td>
+        </tr>
+
+    </table>
+    <form method="post" action="/pay/all">
+        <input type="submit" class="reg-button" value="Сплатити">
+    </form>
+</div>
+</body>

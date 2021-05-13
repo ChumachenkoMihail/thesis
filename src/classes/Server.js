@@ -46,6 +46,10 @@ class Server {
         let data = new Date();
         let hh = String(data.getHours());
         let mm = String(data.getMinutes());
+        if(data.getHours()<10)
+            hh = '0' + hh;
+        if(data.getMinutes()<10)
+            mm = '0' + mm;
         const STARTUP_MESSAGE = `Server is running at ${this.port} port. TIME: ${hh}:${mm}`;
 
         this.app.listen(this.port , (err) => {

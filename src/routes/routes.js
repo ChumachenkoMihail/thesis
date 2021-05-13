@@ -1,4 +1,6 @@
 const {Router} = require('express');
+const {Op} = require('sequelize');
+const sequelize = require('../models/db-singleton');
 const router = Router();
 
 const User = require('../models/User');
@@ -17,17 +19,17 @@ const salt = 10;
 router.get('/', (req,res)=>{
     res.render('index.hbs',{
         title : 'Коммунальные услуги'
-    });
-
-});
+    })
+})
 
 router.get('/registration', (req,res) =>{
     res.render('registration.hbs',{
         title : 'Регистрация'
-    });
-});
+    })
+})
 
 router.post('/registration', (req,res)=>{
+    //TODO: доделать регистрацию
     if(!req.body)
         return res.sendStatus(400);
     const {userSurname, userName,userLastName, userEmail, userPass, userPhone} = req.body;
@@ -55,30 +57,29 @@ router.get('/signin', (req,res)=>{
     })
 })
 
-router.post('/signin', ((req, res) => {
-        if(!req.body)
-            return res.sendStatus(400);
-        let login = req.body.login.toString();
-        let password = req.body.password.toString();
+router.post('/signin', (req, res) => {
+    if(!req.body)
+        return res.sendStatus(400);
+    let login = req.body.login.toString();
+    let password = req.body.password.toString();
 
-        User.findOne({where:{
-                login: login
-                //password: password
-            }, raw: true}).then(foundUser=>{
-            if(foundUser) {
-                console.log('Authenticated');
-                res.cookie('auth', 'true');
-                res.cookie('user_id', foundUser.user_id)
-                return res.redirect('/personal');
-            }
-            else
-                res.redirect('/signin');
-            console.log('No User with this values');
-        }).catch(err=>{
-            console.log(err);
-        })
+    User.findOne({where:{
+            login: login
+            //password: password
+        }, raw: true}).then(foundUser=>{
+        if(foundUser) {
+            console.log('Authenticated');
+            res.cookie('auth', 'true');
+            res.cookie('user_id', foundUser.user_id)
+            return res.redirect('/personal');
+        }
+        else
+            res.redirect('/signin');
+        console.log('No User with this values');
+    }).catch(err=>{
+        console.log(err);
     })
-)
+})
 
 router.get('/logout',(req,res)=>{
     res.clearCookie('auth');
@@ -307,7 +308,8 @@ router.post('/enter' ,(req, res) => {
                         }
                     }).then(found_service => {
                         electro_rate = found_service.rate;
-                        let to_pay = (electro - prev_electro) * electro_rate * previleges;
+                        let to_pay = (electro - prev_electro) * electro_rate * previleges.toFixed(2);
+                        to_pay.toFixed(2);
                         Accruals.create({
                             personal_account_id: req.cookies.user_id,
                             service_id: 1,
@@ -352,7 +354,8 @@ router.post('/enter' ,(req, res) => {
                         service_id: 2
                         }}).then(found_service =>{
                             gas_rate = found_service.rate;
-                            let to_pay = gas* gas_rate * previleges;
+                            let to_pay = (gas - prev_gas) * gas_rate * previleges.toFixed(2);
+                            to_pay.toFixed(2);
                             Accruals.create({
                                 personal_account_id: req.cookies.user_id,
                                 service_id: 2,
@@ -366,7 +369,8 @@ router.post('/enter' ,(req, res) => {
                             service_id: 3
                             }}).then(found_postavka => {
                                 postavka_gasa_rate = found_postavka.rate;
-                                let to_pay_postavka = gas * postavka_gasa_rate * previleges;
+                                let to_pay_postavka = (gas - prev_gas) * postavka_gasa_rate * previleges.toFixed(2);
+                                to_pay_postavka.toFixed(2);
                                 Accruals.create({
                                     personal_account_id: req.cookies.user_id,
                                     service_id: 3,
@@ -406,7 +410,8 @@ router.post('/enter' ,(req, res) => {
                         service_id: 4
                         }}).then(found_service => {
                             water_rate = found_service.rate;
-                            let to_pay = water * water_rate * previleges;
+                            let to_pay = (water-prev_water) * water_rate * previleges.toFixed(2);
+                            to_pay.toFixed(2);
                             Accruals.create({
                                 personal_account_id: req.cookies.user_id,
                                 service_id: 4,
@@ -453,7 +458,868 @@ router.get('/pay', (req, res) => {
     })
 })
 
-//TODO: need to finish this page
+router.get('/pay/svet', (req,res) => {
+    let total_to_show = 0, accruals_to_show;
+    Accruals.findAll({where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 1,
+            paid: 'false'
+        },raw:true})
+    .then(found_accruals => {
+        accruals_to_show = found_accruals;
+        if(found_accruals.length != 0){
+            return Accruals.sum('amount_to_pay', {where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 1,
+                paid: 'false'
+            }})
+        }
+    })
+    .then(total => {
+        console.log(total);
+        total_to_show = total;
+    })
+    .then(()=>{
+        res.render('pay_svet.hbs', {
+            title: 'Сплатити електроенергію',
+            accruals: accruals_to_show,
+            total: total_to_show
+        })
+    })
+})
+
+router.get('/pay/voda', (req,res) => {
+    let total_to_show = 0, accruals_to_show;
+    Accruals.findAll({where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 4,
+            paid: 'false'
+        },raw:true})
+        .then(found_accruals => {
+            accruals_to_show = found_accruals;
+            if(found_accruals.length != 0){
+                return Accruals.sum('amount_to_pay', {where:{
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 4,
+                        paid: 'false'
+                    }})
+            }
+        })
+        .then(total => {
+            console.log(total);
+            total_to_show = total;
+        })
+        .then(()=>{
+            res.render('pay_svet.hbs', {
+                title: 'Сплатити водорозподіл',
+                accruals: accruals_to_show,
+                total: total_to_show
+            })
+        })
+})
+
+router.get('/pay/otoplenie', (req,res) => {
+    let total_to_show = 0, accruals_to_show;
+    Accruals.findAll({where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 5,
+            paid: 'false'
+        },raw:true})
+        .then(found_accruals => {
+            accruals_to_show = found_accruals;
+            if(found_accruals.length != 0){
+                return Accruals.sum('amount_to_pay', {where:{
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 5,
+                        paid: 'false'
+                    }})
+            }
+        })
+        .then(total => {
+            console.log(total);
+            total_to_show = total;
+        })
+        .then(()=>{
+            res.render('pay_svet.hbs', {
+                title: 'Сплатити опалення',
+                accruals: accruals_to_show,
+                total: total_to_show
+            })
+        })
+})
+
+router.get('/pay/musor', (req,res) => {
+    let total_to_show = 0, accruals_to_show;
+    Accruals.findAll({where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 7,
+            paid: 'false'
+        },raw:true})
+        .then(found_accruals => {
+            accruals_to_show = found_accruals;
+            if(found_accruals.length != 0){
+                return Accruals.sum('amount_to_pay', {where:{
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 7,
+                        paid: 'false'
+                    }})
+            }
+        })
+        .then(total => {
+            console.log(total);
+            total_to_show = total;
+        })
+        .then(()=>{
+            res.render('pay_svet.hbs', {
+                title: 'Сплатити вивіз сміття',
+                accruals: accruals_to_show,
+                total: total_to_show
+            })
+        })
+})
+
+router.get('/pay/domofon', (req,res) => {
+    let total_to_show = 0, accruals_to_show;
+    Accruals.findAll({where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 8,
+            paid: 'false'
+        },raw:true})
+        .then(found_accruals => {
+            accruals_to_show = found_accruals;
+            if(found_accruals.length != 0){
+                return Accruals.sum('amount_to_pay', {where:{
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 8,
+                        paid: 'false'
+                    }})
+            }
+        })
+        .then(total => {
+            console.log(total);
+            total_to_show = total;
+        })
+        .then(()=>{
+            res.render('pay_svet.hbs', {
+                title: 'Сплатити домофон',
+                accruals: accruals_to_show,
+                total: total_to_show
+            })
+        })
+})
+
+router.get('/pay/sdpt', (req,res) => {
+    let total_to_show = 0, accruals_to_show;
+    Accruals.findAll({where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 9,
+            paid: 'false'
+        },raw:true})
+        .then(found_accruals => {
+            accruals_to_show = found_accruals;
+            if(found_accruals.length != 0){
+                return Accruals.sum('amount_to_pay', {where:{
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 9,
+                        paid: 'false'
+                    }})
+            }
+        })
+        .then(total => {
+            console.log(total);
+            total_to_show = total;
+        })
+        .then(()=>{
+            res.render('pay_svet.hbs', {
+                title: 'Сплатити послугу з управління домом',
+                accruals: accruals_to_show,
+                total: total_to_show
+            })
+        })
+})
+
+router.get('/pay/gas', (req,res) => {
+    let total_gas = 0, total_postavka_gasa = 0;
+    let found_gas_accruals, found_postavka_gasa_accrual;
+    Accruals.findAll({where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 2,
+            paid: 'false'
+        },raw:true})
+        .then(found_accruals => {
+            found_gas_accruals = found_accruals;
+            if(found_accruals.length != 0){
+                Accruals.sum('amount_to_pay', {where:{
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 2,
+                        paid: 'false'
+                    }})
+                    .then(total => {
+                        total_gas = total;
+                    })
+            }
+
+        })
+        .then(()=>{
+            Accruals.findAll({where:{
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 3,
+                    paid: 'false'
+                },raw:true})
+                .then(found_accruals => {
+                    found_postavka_gasa_accrual = found_accruals;
+                    if(found_accruals.length != 0){
+                        Accruals.sum('amount_to_pay', {where:{
+                                personal_account_id: req.cookies.user_id,
+                                service_id: 3,
+                                paid: 'false'
+                            }})
+                            .then(total => {
+                                total_postavka_gasa = total;
+                            })
+                    }
+
+                })
+        })
+        .then(()=>{
+            let total = total_postavka_gasa + total_gas;
+            res.render('pay_gas.hbs', {
+                title: 'Сплатити газ',
+                total: total,
+                found_gas_accruals: found_gas_accruals,
+                found_postavka_gasa_accrual: found_postavka_gasa_accrual
+            })
+        })
+})
+
+router.get('/pay/all',(req,res)=>{
+    let total = 0;
+    let svet_accrual, gas_accrual, postavka_gasa_accrual, water_accrual, otoplenie_accrual, musor_accrual, domofon_accrual, sdpt_accrual;
+    /*Accruals.sum('amount_to_pay', {where:{
+        personal_account_id: req.cookies.user_id,
+        service_id: 1,
+        paid: 'false'
+    }})
+    .then(total_svet => {
+        total += total_svet;
+        return Accruals.sum('amount_to_pay', {where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 2,
+            paid: 'false'
+        }})
+    })
+    .then(total_gas => {
+        total += total_gas;
+        return Accruals.sum('amount_to_pay', {where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 3,
+                paid: 'false'
+            }})
+    })
+    .then(total_gas_postavka => {
+        total += total_gas_postavka;
+        return Accruals.sum('amount_to_pay', {where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 4,
+                paid: 'false'
+            }})
+    })
+    .then(total_otoplenie => {
+        total += total_otoplenie;
+        return Accruals.sum('amount_to_pay', {where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 5,
+                paid: 'false'
+            }})
+    })
+    .then(total_water => {
+        total += total_water;
+        return Accruals.sum('amount_to_pay', {where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 7,
+                paid: 'false'
+            }})
+    })
+    .then(total_musor => {
+        total += total_musor;
+        return Accruals.sum('amount_to_pay', {where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 8,
+                paid: 'false'
+            }})
+    })
+    .then(total_domofon => {
+        total += total_domofon;
+        return Accruals.sum('amount_to_pay', {where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 9,
+                paid: 'false'
+            }})
+    })
+    .then(total_sdpt => {
+        total += total_sdpt;
+        return Accruals.findAll({where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 1,
+                paid: 'false'
+            },raw:true})
+    })
+    .then(found_svet => {
+        svet_accrual = found_svet;
+        return Accruals.findAll({where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 2,
+                paid: 'false'
+            },raw:true})
+    })
+    .then(found_gas => {
+        gas_accrual = found_gas;
+        return Accruals.findAll({where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 3,
+                paid: 'false'
+            },raw:true})
+    })
+    .then(found_postavka => {
+        postavka_gasa_accrual = found_postavka;
+        return Accruals.findAll({where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 4,
+                paid: 'false'
+            },raw:true})
+    })
+    .then(found_water => {
+        water_accrual = found_water;
+        return Accruals.findAll({where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 5,
+                paid: 'false'
+            },raw:true})
+    })
+    .then(found_otoplenie => {
+        otoplenie_accrual = found_otoplenie;
+        return Accruals.findAll({where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 7,
+                paid: 'false'
+            },raw:true})
+    })
+    .then(found_musor => {
+        musor_accrual = found_musor;
+        return Accruals.findAll({where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 8,
+                paid: 'false'
+            },raw:true})
+    })
+    .then(found_domofon => {
+        domofon_accrual = found_domofon;
+        return Accruals.findAll({where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 9,
+                paid: 'false'
+            },raw:true})
+    })
+    .then(found_sdpt => {
+        sdpt_accrual = found_sdpt;
+    })
+    .then(() => {
+        res.render('pay_all.hbs', {
+            title: 'Сплатити все',
+            total: total,
+            svet_accrual: svet_accrual,
+            gas_accrual: gas_accrual,
+            postavka_gasa_accrual: postavka_gasa_accrual,
+            water_accrual: water_accrual,
+            otoplenie_accrual: otoplenie_accrual,
+            musor_accrual: musor_accrual,
+            domofon_accrual: domofon_accrual,
+            sdpt_accrual: sdpt_accrual
+        })
+    })*/
+    res.render('pay_all.hbs', {
+        title: 'Сплатити все',
+        total: total,
+        svet_accrual: svet_accrual,
+        gas_accrual: gas_accrual,
+        postavka_gasa_accrual: postavka_gasa_accrual,
+        water_accrual: water_accrual,
+        otoplenie_accrual: otoplenie_accrual,
+        musor_accrual: musor_accrual,
+        domofon_accrual: domofon_accrual,
+        sdpt_accrual: sdpt_accrual
+    })
+})
+
+router.post('/pay/svet', (req, res) => {
+    let total = 0;
+    Accruals.sum('amount_to_pay', {where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 1,
+            paid: 'false'
+        }})
+    .then(total => {
+        //TODO: проверка на дурака, если нажмет на оплату без необходимости оплаты
+        let today = new Date();
+        let dd = String(today.getDate());
+        let mm = String(today.getMonth() + 1);
+        let yyyy = String(today.getFullYear());
+        let data = dd + '.' + mm + '.' + yyyy;
+        return Payment.create({
+            user_id: req.cookies.user_id,
+            personal_account_id: req.cookies.user_id,
+            service_id: 1,
+            date: data,
+            amount_paid: total
+        }).catch(console.log)
+    })
+        .then(()=>{
+            Accruals.update({paid: 'true'}, {where: {
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 1,
+                    paid: 'false'
+                }})
+                .then(()=>{
+                    res.redirect('/personal');
+                })
+        })
+})
+
+router.post('/pay/voda', (req,res)=> {
+    let total = 0;
+    Accruals.sum('amount_to_pay', {where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 4,
+            paid: 'false'
+        }})
+        .then(total => {
+            let today = new Date();
+            let dd = String(today.getDate());
+            let mm = String(today.getMonth() + 1);
+            let yyyy = String(today.getFullYear());
+            let data = dd + '.' + mm + '.' + yyyy;
+            return Payment.create({
+                user_id: req.cookies.user_id,
+                personal_account_id: req.cookies.user_id,
+                service_id: 4,
+                date: data,
+                amount_paid: total
+            }).catch(console.log)
+        })
+        .then(()=>{
+            Accruals.update({paid: 'true'}, {where: {
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 4,
+                    paid: 'false'
+                }})
+                .then(()=>{
+                    res.redirect('/personal');
+                })
+        })
+})
+
+router.post('/pay/otoplenie', (req,res)=> {
+    let total = 0;
+    Accruals.sum('amount_to_pay', {where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 5,
+            paid: 'false'
+        }})
+        .then(total => {
+            let today = new Date();
+            let dd = String(today.getDate());
+            let mm = String(today.getMonth() + 1);
+            let yyyy = String(today.getFullYear());
+            let data = dd + '.' + mm + '.' + yyyy;
+            return Payment.create({
+                user_id: req.cookies.user_id,
+                personal_account_id: req.cookies.user_id,
+                service_id: 5,
+                date: data,
+                amount_paid: total
+            }).catch(console.log)
+        })
+        .then(()=>{
+            Accruals.update({paid: 'true'}, {where: {
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 5,
+                    paid: 'false'
+                }})
+                .then(()=>{
+                    res.redirect('/personal');
+                })
+        })
+})
+
+router.post('/pay/musor', (req,res)=> {
+    let total = 0;
+    Accruals.sum('amount_to_pay', {where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 7,
+            paid: 'false'
+        }})
+        .then(total => {
+            let today = new Date();
+            let dd = String(today.getDate());
+            let mm = String(today.getMonth() + 1);
+            let yyyy = String(today.getFullYear());
+            let data = dd + '.' + mm + '.' + yyyy;
+            return Payment.create({
+                user_id: req.cookies.user_id,
+                personal_account_id: req.cookies.user_id,
+                service_id: 7,
+                date: data,
+                amount_paid: total
+            }).catch(console.log)
+        })
+        .then(()=>{
+            Accruals.update({paid: 'true'}, {where: {
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 7,
+                    paid: 'false'
+                }})
+                .then(()=>{
+                    res.redirect('/personal');
+                })
+        })
+})
+
+router.post('/pay/domofon', (req,res)=> {
+    let total = 0;
+    Accruals.sum('amount_to_pay', {where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 8,
+            paid: 'false'
+        }})
+        .then(total => {
+            let today = new Date();
+            let dd = String(today.getDate());
+            let mm = String(today.getMonth() + 1);
+            let yyyy = String(today.getFullYear());
+            let data = dd + '.' + mm + '.' + yyyy;
+            return Payment.create({
+                user_id: req.cookies.user_id,
+                personal_account_id: req.cookies.user_id,
+                service_id: 8,
+                date: data,
+                amount_paid: total
+            }).catch(console.log)
+        })
+        .then(()=>{
+            Accruals.update({paid: 'true'}, {where: {
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 8,
+                    paid: 'false'
+                }})
+                .then(()=>{
+                    res.redirect('/personal');
+                })
+        })
+})
+
+router.post('/pay/sdpt', (req,res)=> {
+    let total = 0;
+    Accruals.sum('amount_to_pay', {where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 9,
+            paid: 'false'
+        }})
+        .then(total => {
+            let today = new Date();
+            let dd = String(today.getDate());
+            let mm = String(today.getMonth() + 1);
+            let yyyy = String(today.getFullYear());
+            let data = dd + '.' + mm + '.' + yyyy;
+            return Payment.create({
+                user_id: req.cookies.user_id,
+                personal_account_id: req.cookies.user_id,
+                service_id: 9,
+                date: data,
+                amount_paid: total
+            }).catch(console.log)
+        })
+        .then(()=>{
+            Accruals.update({paid: 'true'}, {where: {
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 9,
+                    paid: 'false'
+                }})
+                .then(()=>{
+                    res.redirect('/personal');
+                })
+        })
+})
+
+router.post('/pay/gas', (req,res)=> {
+    let today = new Date();
+    let dd = String(today.getDate());
+    let mm = String(today.getMonth() + 1);
+    let yyyy = String(today.getFullYear());
+    let data = dd + '.' + mm + '.' + yyyy;
+
+    Accruals.sum('amount_to_pay', {where:{
+        personal_account_id: req.cookies.user_id,
+        service_id: 2,
+        paid: 'false'
+    }})
+    .then(total => {
+        return Payment.create({
+            user_id: req.cookies.user_id,
+            personal_account_id: req.cookies.user_id,
+            service_id: 2,
+            date: data,
+            amount_paid: total
+        }).catch(console.log)
+    })
+    .then(()=>{
+        Accruals.sum('amount_to_pay', {where:{
+            personal_account_id: req.cookies.user_id,
+                service_id: 3,
+                paid: 'false'
+            }})
+    })
+    .then(total => {
+        return Payment.create({
+            user_id: req.cookies.user_id,
+            personal_account_id: req.cookies.user_id,
+            service_id: 3,
+            date: data,
+            amount_paid: total
+        }).catch(console.log)
+    })
+    .then(()=>{
+        Accruals.update({paid: 'true'}, {where: {
+            personal_account_id: req.cookies.user_id,
+            [Op.or]:[
+                {service_id: 2},
+                {service_id: 3}
+            ],
+            paid: 'false'
+        }})
+        .then(()=>{
+            res.redirect('/personal');
+        })
+    })
+})
+
+router.post('/pay/all', (req,res)=> {
+    let today = new Date();
+    let dd = String(today.getDate());
+    let mm = String(today.getMonth() + 1);
+    let yyyy = String(today.getFullYear());
+    let data = dd + '.' + mm + '.' + yyyy;
+
+    Accruals.findAll({where:{
+        personal_account_id: req.cookies.user_id,
+            service_id: 1,
+            paid: 'false'
+        },raw: true})
+    .then(found => {
+        if(found.length !=0){
+            Accruals.sum('amount_to_pay', {where:{
+                personal_account_id: req.cookies.user_id,
+                service_id: 1,
+                paid: 'false'
+            }})
+            .then(total => {
+                return Payment.create({
+                    user_id: req.cookies.user_id,
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 1,
+                    date: data,
+                    amount_paid: total
+                }).catch(console.log)
+            })
+        }
+    })
+    .then(()=>{
+        Accruals.findAll({where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 2,
+            paid: 'false'
+        },raw: true})
+        .then(found => {
+            if(found.length !=0){
+                Accruals.sum('amount_to_pay', {where:{
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 2,
+                    paid: 'false'
+                }})
+                .then(total => {
+                    return Payment.create({
+                        user_id: req.cookies.user_id,
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 2,
+                        date: data,
+                        amount_paid: total
+                    }).catch(console.log)
+                })
+            }
+        })
+    })
+    .then(()=>{
+        Accruals.findAll({where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 3,
+            paid: 'false'
+        },raw: true})
+        .then(found => {
+            if(found.length !=0){
+                Accruals.sum('amount_to_pay', {where:{
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 3,
+                    paid: 'false'
+                }})
+                .then(total => {
+                    return Payment.create({
+                        user_id: req.cookies.user_id,
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 3,
+                        date: data,
+                        amount_paid: total
+                    }).catch(console.log)
+                })
+            }
+        })
+    })
+    .then(()=>{
+        Accruals.findAll({where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 4,
+            paid: 'false'
+        },raw: true})
+        .then(found => {
+            if(found.length !=0){
+                Accruals.sum('amount_to_pay', {where:{
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 4,
+                    paid: 'false'
+                }})
+                .then(total => {
+                    return Payment.create({
+                        user_id: req.cookies.user_id,
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 4,
+                        date: data,
+                        amount_paid: total
+                    }).catch(console.log)
+                })
+            }
+        })
+    })
+    .then(()=>{
+        Accruals.findAll({where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 5,
+            paid: 'false'
+        },raw: true})
+        .then(found => {
+            if(found.length !=0){
+                Accruals.sum('amount_to_pay', {where:{
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 5,
+                    paid: 'false'
+                }})
+                .then(total => {
+                    return Payment.create({
+                        user_id: req.cookies.user_id,
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 5,
+                        date: data,
+                        amount_paid: total
+                    }).catch(console.log)
+                })
+            }
+        })
+    })
+    .then(()=>{
+        Accruals.findAll({where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 7,
+            paid: 'false'
+        },raw: true})
+        .then(found => {
+            if(found.length !=0){
+                Accruals.sum('amount_to_pay', {where:{
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 7,
+                    paid: 'false'
+                }})
+                .then(total => {
+                    return Payment.create({
+                        user_id: req.cookies.user_id,
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 7,
+                        date: data,
+                        amount_paid: total
+                    }).catch(console.log)
+                })
+            }
+        })
+    })
+    .then(()=>{
+        Accruals.findAll({where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 8,
+            paid: 'false'
+        },raw: true})
+        .then(found => {
+            if(found.length !=0){
+                Accruals.sum('amount_to_pay', {where:{
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 8,
+                    paid: 'false'
+                }})
+                .then(total => {
+                    return Payment.create({
+                        user_id: req.cookies.user_id,
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 8,
+                        date: data,
+                        amount_paid: total
+                    }).catch(console.log)
+                })
+            }
+        })
+    })
+    .then(()=>{
+        Accruals.findAll({where:{
+            personal_account_id: req.cookies.user_id,
+            service_id: 9,
+            paid: 'false'
+        },raw: true})
+        .then(found => {
+            if(found.length !=0){
+                Accruals.sum('amount_to_pay', {where:{
+                    personal_account_id: req.cookies.user_id,
+                    service_id: 9,
+                    paid: 'false'
+                }})
+                .then(total => {
+                    return Payment.create({
+                        user_id: req.cookies.user_id,
+                        personal_account_id: req.cookies.user_id,
+                        service_id: 9,
+                        date: data,
+                        amount_paid: total
+                    }).catch(console.log)
+                })
+            }
+        })
+    })
+    .then(()=>{
+        Accruals.update({paid: 'true'}, {where: {
+            personal_account_id: req.cookies.user_id,
+            paid: 'false'
+        }})
+        .then(()=>{
+            res.redirect('/personal');
+        })
+    })
+
+})
+
+//TODO: need to finish about page
 router.get('/about',(req,res)=>{
     res.render('about.hbs',{
         title: 'О компании'

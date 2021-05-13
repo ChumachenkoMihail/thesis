@@ -9,7 +9,8 @@ const Counter = require('../models/Counter');
 const CronJob = require('cron').CronJob;
 
 let komunalka = new CronJob('0 1 0 1 * *', function (){
-
+    // 0 1 0 1 * *
+    //TODO: не работает крон
     Personal_account.findAll({attributes:['personal_account_id', 'square']})
         .then(foundAccounts=>{
             for(key in foundAccounts) {
@@ -93,6 +94,9 @@ let komunalka = new CronJob('0 1 0 1 * *', function (){
                                 amount_to_pay: heating_to_pay,
                                 paid: 'false'
                             })
+                                .then(()=>{
+                                    console.log('cron access');
+                                })
                         })
                 }
             }
