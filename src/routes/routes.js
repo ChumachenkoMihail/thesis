@@ -14,7 +14,10 @@ const Counter = require('../models/Counter');
 const bcrypt = require('bcrypt');
 const salt = 10;
 
-
+function random(min,max){
+    let rand = min + Math.random() * (max + 1 - min);
+    return Math.floor(rand);
+}
 
 router.get('/', (req,res)=>{
     res.render('index.hbs',{
@@ -29,24 +32,139 @@ router.get('/registration', (req,res) =>{
 })
 
 router.post('/registration', (req,res)=>{
-    //TODO: доделать регистрацию
+
     if(!req.body)
         return res.sendStatus(400);
-    const {userSurname, userName,userLastName, userEmail, userPass, userPhone} = req.body;
+    const {userSurname, userName,userLastName, userEmail, userPass, userAddress, userHome, userFlat} = req.body;
     let hashed_pass = bcrypt.hashSync(userPass, salt);
-    User.create({
-        surname: userSurname,
-        name: userName,
-        lastname: userLastName,
-        login: userEmail,
-        password: hashed_pass,
-        email: userEmail,
-        telephone: userPhone,
-        personal_account_id: 1
-    }).then(res=>{
-        console.log("Registration Successfully!");
-    }).catch(err=>{
-        console.log(err);
+
+    let surnames = ['Сівчук', 'Чумаченко', 'Ставратій', 'Зубець', 'Багній', 'Горбатюк ', 'Благун', 'Коваль', 'Романенко', 'Коваленко'];
+    let names_male = ['Михайло', 'Максим', 'Дмитро', 'Артем', 'Павло'];
+    let names_female = ['Юлія', 'Єлизавета', 'Анастасія', 'Вікторія', 'Олександра'];
+    let lastnames_male = ['Павлович', 'Миколайович', 'Іванович', 'Дмитрович', 'Юрійович'];
+    let lastnames_female = ['Сергіївна', 'Вікторовна', 'Олександрівна', 'Владиславівна', 'Василівна'];
+    let square, heated_square,count_of_tenants;
+
+    square = random(30,100);
+    heated_square = square - random(0, 7);
+    count_of_tenants = random(1,4);
+
+    Personal_account.findOne({where:{
+            street: userAddress
+    }})
+    .then(found_adress => {
+        let per_acc_id;
+        if(found_adress == null){
+            Personal_account.create({
+                street: userAddress,
+                house: userHome,
+                flat: userFlat,
+                square: square,
+                heated_square: heated_square,
+                count_of_tenants: count_of_tenants
+            })
+                .then(()=>{
+                    return Personal_account.findOne({where:{
+                        street: userAddress,
+                        house: userHome,
+                        flat: userFlat
+                        }})
+                })
+                .then(found_account => {
+                    per_acc_id = found_account.personal_account_id;
+                    return User.create({
+                        surname: userSurname,
+                        name: userName,
+                        lastname: userLastName,
+                        login: userEmail,
+                        password: hashed_pass,
+                        email: userEmail,
+                        telephone: '1',
+                        personal_account_id: per_acc_id
+                    })
+                })
+                .then(()=>{
+                    for(let i=1; i<=count_of_tenants-1; i++){
+                        let sex = random(1,2);
+                        let surn = surnames[random(1,10)];
+                        let name, lastname;
+                        let percent = random(1,10);
+                        if(percent === 1){
+                            percent = 0.5;
+                        }
+                        else{
+                            if(percent === 2 || percent === 3){
+                                percent = 0.75;
+                            }
+                            else{
+                                percent = 1;
+                            }
+                        }
+                        if(sex === 1){
+                            name = names_male[random(1,5)];
+                            lastname = lastnames_male[random(1,5)];
+                        }
+                        else{
+                            name = names_female[random(1,5)];
+                            lastname = lastnames_female[random(1,5)];
+                        }
+                        Tenants.create({
+                            surname: surn,
+                            name: name,
+                            lastname: lastname,
+                            percent_of_privileges: percent,
+                            personal_account_id: per_acc_id
+                        })
+                    }
+                    return 0;
+                })
+                .then(()=>{
+                    return Tenants.create({
+                        surname: userSurname,
+                        name: userName,
+                        lastname: userLastName,
+                        percent_of_privileges: 1,
+                        personal_account_id: per_acc_id
+                    })
+                })
+                .then(()=>{
+                    return Counter.create({
+                        personal_account_id: per_acc_id,
+                        start_value: 0,
+                        service_id: 1,
+                        counter_number: random(164752, 958476)
+                    })
+                })
+                .then(()=>{
+                    return Counter.create({
+                        personal_account_id: per_acc_id,
+                        start_value: 0,
+                        service_id: 2,
+                        counter_number: random(164752, 958476)
+                    })
+                })
+                .then(()=>{
+                    return Counter.create({
+                        personal_account_id: per_acc_id,
+                        start_value: 0,
+                        service_id: 4,
+                        counter_number: random(164752, 958476)
+                    })
+                })
+        }
+        else{
+            User.create({
+                surname: userSurname,
+                name: userName,
+                lastname: userLastName,
+                login: userEmail,
+                password: hashed_pass,
+                email: userEmail,
+                telephone: '1',
+                personal_account_id: found_adress.personal_account_id
+            })
+        }
+        ///////
     })
     res.redirect('/signin');
 })
@@ -67,15 +185,23 @@ router.post('/signin', (req, res) => {
             login: login
             //password: password
         }, raw: true}).then(foundUser=>{
-        if(foundUser) {
-            console.log('Authenticated');
-            res.cookie('auth', 'true');
-            res.cookie('user_id', foundUser.user_id)
-            return res.redirect('/personal');
-        }
-        else
-            res.redirect('/signin');
-        console.log('No User with this values');
+            if(foundUser) {
+                Personal_account.findOne({
+                    where: {
+                        personal_account_id: foundUser.personal_account_id
+                    }
+                }).then(foundAccount => {
+                    console.log('Authenticated');
+                    res.cookie('auth', 'true');
+                    res.cookie('user_id', foundAccount.personal_account_id);
+                    res.cookie('personal_id', foundUser.user_id);
+                    return res.redirect('/personal');
+                })
+            }
+            else {
+                res.redirect('/signin');
+                console.log('No User with this values');
+            }
     }).catch(err=>{
         console.log(err);
     })
@@ -88,22 +214,81 @@ router.get('/logout',(req,res)=>{
 
 router.get('/personal',(req,res)=>{
     if(req.cookies.auth === 'true'){
+        let username, count_of_tenants =0;
+        let counters;
         User.findOne({where:{
-                user_id: req.cookies.user_id
-            }}).then(foundUser =>{
-                Personal_account.findOne({where:{
+            user_id: req.cookies.personal_id
+        }})
+        .then(foundUser =>{
+            username = `${foundUser.surname} ${foundUser.name} ${foundUser.lastname}`
+            return Tenants.findAll({
+                where:{
                     personal_account_id: req.cookies.user_id
-                    }}).then(foundAccount =>{
-                    res.render('personal.hbs',{
-                        title: 'Личный кабинет',
-                        fullName: `${foundUser.surname} ${foundUser.name} ${foundUser.lastname}`,
-                        street: `${foundAccount.street}`,
-                        house: `${foundAccount.house}`,
-                        flat: `${foundAccount.flat}`
-                })
+                }
             })
-        }).catch(err=>{
-            console.log(err);
+        })
+        .then(found_tenants => {
+            for (let key in found_tenants){
+                count_of_tenants++;
+            }
+        })
+        .then(()=>{
+            return Counter.findAll({where:{
+                personal_account_id: req.cookies.user_id
+                },raw:true})
+        })     
+        .then(found_counters => {
+            return Personal_account.findOne({where:{
+                personal_account_id: req.cookies.user_id
+                }})
+            .then(found_account =>{
+                for(let key in found_counters){
+                    let l_schet = '';
+                    l_schet += found_counters[key].service_id + 1000;
+                    l_schet += found_account.flat;
+                    l_schet +=found_account.count_of_tenants;
+                    found_counters[key].schet = l_schet;
+                    switch (found_counters[key].service_id){
+                        case 1: found_counters[key].service_name = 'Електроенергія'; break;
+                        case 2: found_counters[key].service_name = 'Газ'; break;
+                        case 4: found_counters[key].service_name = 'Водорозподіл'; break;
+                    }
+                }
+                counters = found_counters;
+            })
+    })
+    .then(()=>{
+        for(let key in counters) {
+            Accruals.max('counter_value', {
+                where: {
+                    personal_account_id: req.cookies.user_id,
+                    service_id: counters[key].service_id
+                }
+            })
+            .then(found_max => {
+                counters[key].last_value = found_max;
+            })
+        }
+    })
+        .then(()=>{
+            return Personal_account.findOne({
+                where: {
+                    personal_account_id: req.cookies.user_id
+                }
+            })
+        })
+        .then(foundAccount => {
+            res.render('personal.hbs',{
+                title: 'Личный кабинет',
+                fullName: username ,
+                street: foundAccount.street,
+                house : foundAccount.house,
+                flat  : foundAccount.flat,
+                square: foundAccount.square,
+                heated_square: foundAccount.heated_square,
+                tenants: count_of_tenants,
+                counters: counters,
+            })
         })
     }
     else {
@@ -117,6 +302,7 @@ router.get('/enter', (req,res)=>{
         let electro_start_value = 0, electro_counter_number = "", electro_date = "", electro_last_value = 1;
         let gas_start_value = 0, gas_counter_number = "", gas_date = "", gas_last_value = 1;
         let water_start_value = 0, water_counter_number = "", water_date = "", water_last_value = 1;
+        let schet = {};
         Counter.findOne({
             where: {
                 personal_account_id: req.cookies.user_id,
@@ -226,6 +412,32 @@ router.get('/enter', (req,res)=>{
                     gas_last_value = last_gas_accrual.counter_value;
                 }
             })
+            .then(()=>{
+                return Counter.findAll({where:{
+                        personal_account_id: req.cookies.user_id
+                    },raw:true})
+                })
+            .then(found_counters => {
+                return Personal_account.findOne({where:{
+                        personal_account_id: req.cookies.user_id
+                    }})
+                    .then(found_account =>{
+                        schet.electro = '';
+                        schet.electro += found_counters[0].service_id + 1000;
+                        schet.electro += found_account.flat;
+                        schet.electro += found_account.count_of_tenants;
+
+                        schet.gas = '';
+                        schet.gas += found_counters[1].service_id + 1000;
+                        schet.gas += found_account.flat;
+                        schet.gas += found_account.count_of_tenants;
+
+                        schet.water = '';
+                        schet.water += found_counters[2].service_id + 1000;
+                        schet.water += found_account.flat;
+                        schet.water += found_account.count_of_tenants;
+                    })
+            })
             .then(() => {
                 res.render('enter.hbs', {
                     title: 'Внести показания',
@@ -240,7 +452,8 @@ router.get('/enter', (req,res)=>{
                     gas_start_value: gas_start_value,
                     gas_counter_number: gas_counter_number,
                     gas_date: gas_date,
-                    gas_last_value: gas_last_value
+                    gas_last_value: gas_last_value,
+                    schet: schet
                 })
             })
             .catch(console.log);

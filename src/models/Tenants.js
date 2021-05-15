@@ -5,6 +5,7 @@ const Tenants = sequelize.define('tenants', {
     tenant_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
         allowNull: false
     },
     surname:{

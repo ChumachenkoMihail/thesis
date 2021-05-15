@@ -26,30 +26,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90f6adb6-3bf4-4529-80f7-75842a0c0a41" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/public/images/icon_all.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/public/images/icon_domofon.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/public/images/icon_gas.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/public/images/icon_mysor.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/public/images/icon_otoplenie.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/public/images/icon_sdpt.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/public/images/icon_svet.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/public/images/icon_voda.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/pay_all.hbs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/pay_domofon.hbs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/pay_gas.hbs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/pay_musor.hbs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/pay_otoplenie.hbs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/pay_sdpt.hbs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/pay_svet.hbs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/pay_voda.hbs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/classes/Server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/Server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cronjob/cron.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/cronjob/cron.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/Payment.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Payment.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Tenants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Tenants.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/public/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/css/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/enter.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/enter.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/pay.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/partials/header.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/partials/header.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/personal.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/personal.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/registration.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/registration.hbs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,7 +153,8 @@
       <workItem from="1620682671849" duration="11808000" />
       <workItem from="1620709701944" duration="15824000" />
       <workItem from="1620805925961" duration="16696000" />
-      <workItem from="1620905830526" duration="1135000" />
+      <workItem from="1620905830526" duration="16260000" />
+      <workItem from="1620989713088" duration="18910000" />
     </task>
     <task id="LOCAL-00001" summary="Added cookies and dynamic view of user name at /personal">
       <created>1616953151658</created>
@@ -227,7 +212,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620684199924</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="not finished payment">
+      <created>1620907676696</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1620907676773</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -266,7 +258,8 @@
     <MESSAGE value="cron komunalka added" />
     <MESSAGE value="enter values page dynamic variables added.&#10;accruals are now working correctly." />
     <MESSAGE value="fixing some bugs &amp; new pay.hbs file" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixing some bugs &amp; new pay.hbs file" />
+    <MESSAGE value="not finished payment" />
+    <option name="LAST_COMMIT_MESSAGE" value="not finished payment" />
   </component>
   <component name="WindowStateProjectService">
     <state x="453" y="166" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1612771049021">
@@ -357,9 +350,9 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="339" y="162" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1620718449443" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1620727583360">
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1620995345789">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1620727583360" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1620995345789" />
   </component>
 </project>
