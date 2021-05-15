@@ -151,6 +151,11 @@ form{
     border-bottom: 1px solid black;
     outline: none;
 }
+.reg-input:valid{
+    border-bottom: 2px solid#8beb74;
+    border-radius: 3px;
+
+}
 .reg-button{
     color: black;
     border-radius: 10px;

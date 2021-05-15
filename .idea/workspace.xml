@@ -27,13 +27,10 @@
   <component name="ChangeListManager">
     <list default="true" id="90f6adb6-3bf4-4529-80f7-75842a0c0a41" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/Tenants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Tenants.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/public/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/css/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/enter.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/enter.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/partials/header.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/partials/header.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/personal.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/personal.hbs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/registration.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/registration.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/signin.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/signin.hbs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,7 +151,7 @@
       <workItem from="1620709701944" duration="15824000" />
       <workItem from="1620805925961" duration="16696000" />
       <workItem from="1620905830526" duration="16260000" />
-      <workItem from="1620989713088" duration="18910000" />
+      <workItem from="1620989713088" duration="30238000" />
     </task>
     <task id="LOCAL-00001" summary="Added cookies and dynamic view of user name at /personal">
       <created>1616953151658</created>
@@ -219,7 +216,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620907676773</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="registration updated">
+      <created>1621078612641</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1621078612641</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -259,7 +263,8 @@
     <MESSAGE value="enter values page dynamic variables added.&#10;accruals are now working correctly." />
     <MESSAGE value="fixing some bugs &amp; new pay.hbs file" />
     <MESSAGE value="not finished payment" />
-    <option name="LAST_COMMIT_MESSAGE" value="not finished payment" />
+    <MESSAGE value="registration updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="registration updated" />
   </component>
   <component name="WindowStateProjectService">
     <state x="453" y="166" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1612771049021">
@@ -346,10 +351,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="184" y="9" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1614516450001" />
-    <state x="339" y="162" width="672" height="677" key="run.anything.popup" timestamp="1620718449443">
+    <state x="339" y="162" width="672" height="677" key="run.anything.popup" timestamp="1621109267569">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="339" y="162" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1620718449443" />
+    <state x="339" y="162" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1621109267569" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1620995345789">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

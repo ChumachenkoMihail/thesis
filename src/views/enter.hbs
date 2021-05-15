@@ -1,7 +1,7 @@
 <body>
 {{>header}}
 <div style="width: 100%; height: 100%">
-    <form method="post" action="/enter">
+    <form method="post" action="/enter" onsubmit="return validate();">
         <div align="center" class="enter-table">
             <table border="1" cellspacing="0">
                 <tr align="center" valign="center" class="table-grey">
@@ -22,8 +22,8 @@
                     <td>{{electro_counter_number}}</td>
                     <td>{{schet.electro}}</td>
                     <td>{{electro_date}}</td>
-                    <td>{{electro_last_value}}</td>
-                    <td><input type="text" name="electro"></td>
+                    <td id="electro_last_value">{{electro_last_value}}</td>
+                    <td><input type="text" name="electro" id="electro_input" oninput="onlyDigits(this)"></td>
                 </tr>
                 <tr align="center" valign="center" class="table-grey">
                     <td>Водорозподіл</td>
@@ -31,8 +31,8 @@
                     <td>{{water_counter_number}}</td>
                     <td>{{schet.water}}</td>
                     <td>{{water_date}}</td>
-                    <td>{{water_last_value}}</td>
-                    <td><input type="text" name="water" class="table-grey"></td>
+                    <td id="water_last_value">{{water_last_value}}</td>
+                    <td><input type="text" name="water" class="table-grey" id="water_input" oninput="onlyDigits(this)"></td>
                 </tr>
                 <tr align="center" valign="center">
                     <td>Газ</td>
@@ -40,8 +40,8 @@
                     <td>{{gas_counter_number}}</td>
                     <td>{{schet.gas}}</td>
                     <td>{{gas_date}}</td>
-                    <td>{{gas_last_value}}</td>
-                    <td><input type="text" name="gas"></td>
+                    <td id="gas_last_value">{{gas_last_value}}</td>
+                    <td><input type="text" name="gas" id="gas_input" oninput="onlyDigits(this)"></td>
                 </tr>
             </table>
             <input type="submit" value="Занести показання" class="enter-button" align="center">
@@ -49,4 +49,41 @@
     </form>
     <br><br><br><br><br><br>
 </div>
+<script>
+    function onlyDigits(el){
+        let value = el.value;
+        el.value = value.replace(/\D/g, '');
+    }
+    function validate(){
+        const electro_last = document.querySelector('[id="electro_last_value"]');
+        const water_last = document.querySelector('[id="water_last_value"]');
+        const gas_last = document.querySelector('[id="gas_last_value"]');
+        const electro_input = document.querySelector('[id="electro_input"]');
+        const water_input = document.querySelector('[id="water_input"]');
+        const gas_input = document.querySelector('[id="gas_input"]');
+        let valid = true;
+        let entered = false;
+        if(electro_input.value !== '') {
+            entered = true;
+            if (electro_input.value <= parseInt(electro_last.textContent))
+                valid = false;
+        }
+        if(water_input.value !== '') {
+            entered = true;
+            if (water_input.value <= parseInt(water_last.textContent))
+                valid = false;
+        }
+        if(gas_input.value !== '') {
+            entered = true;
+            if (gas_input.value <= parseInt(gas_last.textContent))
+                valid = false;
+        }
+        if(!entered)
+            alert('Будь-ласка введіть показники');
+        if(!valid)
+            alert('Не можна ввести значення менше попреднього!');
+        let result = entered & valid;
+        return result;
+    }
+</script>
 </body>
