@@ -11,7 +11,7 @@ const Accruals = sequelize.define('accruals', {
         allowNull: false
     },
     data:{
-        type: DataTypes.STRING,
+        type: DataTypes.DATEONLY,
         allowNull: false
     },
     counter_value:{

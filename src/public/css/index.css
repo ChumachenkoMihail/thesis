@@ -37,7 +37,7 @@ a:hover{
 .header-menu {
     background-color: #efeded;
     display: grid;
-    grid-template-columns: repeat(7,1fr);
+    grid-template-columns: repeat(6,1fr);
     grid-gap: 1em;
     justify-content: center;
     align-items: center;
@@ -126,7 +126,7 @@ a.footer-link{
     justify-content: center;
     align-items: center;
 }
-input{
+input:not(#after, #before){
     border: none;
     height: 5vh;
     margin: 1vh;
@@ -273,7 +273,50 @@ ul{
 }
 
 /*accruals page*/
-.accruals_table{
+.side_accruals{
+    width: 20%;
+    float: left;
+    padding: 25px;
+}
+input#after{
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 100%;
+    height: 32px;
+    align-content: center;
+    margin: 5px 0;
+    padding: 3px;
+}
+input#before{
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 100%;
+    height: 32px;
+    align-content: center;
+    margin: 5px 0;
+    padding: 3px;
+    display: inline;
+}
+#ggg{
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+select#sel{
+    width: 100%;
+    height: 32px;
+    align-content: center;
+    margin: 5px 0;
+    box-sizing: border-box;
+
+}
+button#accruals{
+    width: 100%;
+    height: 32px;
+    align-content: center;
+    margin: 5px 0;
+    box-sizing: border-box;
 
 }
 

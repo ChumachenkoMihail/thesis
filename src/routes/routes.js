@@ -477,10 +477,6 @@ router.post('/enter' ,(req, res) => {
     let electro_rate, gas_rate, water_rate, postavka_gasa_rate;
 
     let today = new Date();
-    let dd = String(today.getDate());
-    let mm = String(today.getMonth()+1);
-    let yyyy = String(today.getFullYear());
-    let data = dd + '.' + mm + '.' + yyyy;
 
     let previleges = 1;
 
@@ -532,7 +528,7 @@ router.post('/enter' ,(req, res) => {
                         Accruals.create({
                             personal_account_id: req.cookies.user_id,
                             service_id: 1,
-                            data: data,
+                            data: today,
                             counter_value: electro,
                             amount_to_pay: to_pay,
                             paid: 'false'
@@ -574,7 +570,7 @@ router.post('/enter' ,(req, res) => {
                             Accruals.create({
                                 personal_account_id: req.cookies.user_id,
                                 service_id: 2,
-                                data: data,
+                                data: today,
                                 counter_value: gas,
                                 amount_to_pay: to_pay,
                                 paid: 'false'
@@ -589,7 +585,7 @@ router.post('/enter' ,(req, res) => {
                                 Accruals.create({
                                     personal_account_id: req.cookies.user_id,
                                     service_id: 3,
-                                    data: data,
+                                    data: today,
                                     counter_value: gas,
                                     amount_to_pay: to_pay_postavka,
                                     paid: 'false'
@@ -629,7 +625,7 @@ router.post('/enter' ,(req, res) => {
                             Accruals.create({
                                 personal_account_id: req.cookies.user_id,
                                 service_id: 4,
-                                data: data,
+                                data: today,
                                 counter_value: water,
                                 amount_to_pay: to_pay,
                                 paid: 'false'
@@ -655,15 +651,49 @@ router.get('/accruals', (req, res) => {
 })
 
 router.get('/ajax',(req, res) => {
-        let result;
-        Accruals.findAll({where:{
+        let result = [];
+        if(req.query.after && !req.query.before) {
+            Accruals.findAll({
+                where: {
+                    personal_account_id: req.cookies.user_id,
+                    service_id: req.query.value,
+                    data: {[Op.gte]: req.query.after}
+                }, raw: true
+            }).then(foundAccruals => {
+                result = foundAccruals;
+
+            }).then(() => {
+                res.json(result);
+            })
+        }
+        if(!req.query.after && req.query.before) {
+            Accruals.findAll({
+                where: {
+                    personal_account_id: req.cookies.user_id,
+                    service_id: req.query.value,
+                    data: {[Op.lte]: req.query.before}
+                }, raw: true
+            }).then(foundAccruals => {
+                result = foundAccruals;
+
+            }).then(() => {
+                res.json(result);
+            })
+        }
+    if(req.query.after && req.query.before) {
+        Accruals.findAll({
+            where: {
                 personal_account_id: req.cookies.user_id,
-                service_id: req.query.value
-            }, raw: true}).then(foundAccruals => {
+                service_id: req.query.value,
+                data: {[Op.gte]: req.query.after,[Op.lte]: req.query.before}
+            }, raw: true
+        }).then(foundAccruals => {
             result = foundAccruals;
-        }).then(()=>{
+
+        }).then(() => {
             res.json(result);
         })
+    }
 })
 
 router.get('/pay', (req, res) => {
@@ -1062,15 +1092,11 @@ router.post('/pay/svet', (req, res) => {
     .then(total => {
         //TODO: проверка на дурака, если нажмет на оплату без необходимости оплаты
         let today = new Date();
-        let dd = String(today.getDate());
-        let mm = String(today.getMonth() + 1);
-        let yyyy = String(today.getFullYear());
-        let data = dd + '.' + mm + '.' + yyyy;
         return Payment.create({
             user_id: req.cookies.user_id,
             personal_account_id: req.cookies.user_id,
             service_id: 1,
-            date: data,
+            date: today,
             amount_paid: total
         }).catch(console.log)
     })
@@ -1095,15 +1121,12 @@ router.post('/pay/voda', (req,res)=> {
         }})
         .then(total => {
             let today = new Date();
-            let dd = String(today.getDate());
-            let mm = String(today.getMonth() + 1);
-            let yyyy = String(today.getFullYear());
-            let data = dd + '.' + mm + '.' + yyyy;
+            
             return Payment.create({
                 user_id: req.cookies.user_id,
                 personal_account_id: req.cookies.user_id,
                 service_id: 4,
-                date: data,
+                date: today,
                 amount_paid: total
             }).catch(console.log)
         })
@@ -1128,15 +1151,12 @@ router.post('/pay/otoplenie', (req,res)=> {
         }})
         .then(total => {
             let today = new Date();
-            let dd = String(today.getDate());
-            let mm = String(today.getMonth() + 1);
-            let yyyy = String(today.getFullYear());
-            let data = dd + '.' + mm + '.' + yyyy;
+            
             return Payment.create({
                 user_id: req.cookies.user_id,
                 personal_account_id: req.cookies.user_id,
                 service_id: 5,
-                date: data,
+                date: today,
                 amount_paid: total
             }).catch(console.log)
         })
@@ -1161,15 +1181,12 @@ router.post('/pay/musor', (req,res)=> {
         }})
         .then(total => {
             let today = new Date();
-            let dd = String(today.getDate());
-            let mm = String(today.getMonth() + 1);
-            let yyyy = String(today.getFullYear());
-            let data = dd + '.' + mm + '.' + yyyy;
+            
             return Payment.create({
                 user_id: req.cookies.user_id,
                 personal_account_id: req.cookies.user_id,
                 service_id: 7,
-                date: data,
+                date: today,
                 amount_paid: total
             }).catch(console.log)
         })
@@ -1194,15 +1211,12 @@ router.post('/pay/domofon', (req,res)=> {
         }})
         .then(total => {
             let today = new Date();
-            let dd = String(today.getDate());
-            let mm = String(today.getMonth() + 1);
-            let yyyy = String(today.getFullYear());
-            let data = dd + '.' + mm + '.' + yyyy;
+            
             return Payment.create({
                 user_id: req.cookies.user_id,
                 personal_account_id: req.cookies.user_id,
                 service_id: 8,
-                date: data,
+                date: today,
                 amount_paid: total
             }).catch(console.log)
         })
@@ -1227,15 +1241,12 @@ router.post('/pay/sdpt', (req,res)=> {
         }})
         .then(total => {
             let today = new Date();
-            let dd = String(today.getDate());
-            let mm = String(today.getMonth() + 1);
-            let yyyy = String(today.getFullYear());
-            let data = dd + '.' + mm + '.' + yyyy;
+            
             return Payment.create({
                 user_id: req.cookies.user_id,
                 personal_account_id: req.cookies.user_id,
                 service_id: 9,
-                date: data,
+                date: today,
                 amount_paid: total
             }).catch(console.log)
         })
@@ -1253,10 +1264,7 @@ router.post('/pay/sdpt', (req,res)=> {
 
 router.post('/pay/gas', (req,res)=> {
     let today = new Date();
-    let dd = String(today.getDate());
-    let mm = String(today.getMonth() + 1);
-    let yyyy = String(today.getFullYear());
-    let data = dd + '.' + mm + '.' + yyyy;
+    
 
     Accruals.sum('amount_to_pay', {where:{
         personal_account_id: req.cookies.user_id,
@@ -1268,7 +1276,7 @@ router.post('/pay/gas', (req,res)=> {
             user_id: req.cookies.user_id,
             personal_account_id: req.cookies.user_id,
             service_id: 2,
-            date: data,
+            date: today,
             amount_paid: total
         }).catch(console.log)
     })
@@ -1284,7 +1292,7 @@ router.post('/pay/gas', (req,res)=> {
             user_id: req.cookies.user_id,
             personal_account_id: req.cookies.user_id,
             service_id: 3,
-            date: data,
+            date: today,
             amount_paid: total
         }).catch(console.log)
     })
@@ -1305,10 +1313,7 @@ router.post('/pay/gas', (req,res)=> {
 
 router.post('/pay/all', (req,res)=> {
     let today = new Date();
-    let dd = String(today.getDate());
-    let mm = String(today.getMonth() + 1);
-    let yyyy = String(today.getFullYear());
-    let data = dd + '.' + mm + '.' + yyyy;
+    
 
     Accruals.findAll({where:{
         personal_account_id: req.cookies.user_id,
@@ -1327,7 +1332,7 @@ router.post('/pay/all', (req,res)=> {
                     user_id: req.cookies.user_id,
                     personal_account_id: req.cookies.user_id,
                     service_id: 1,
-                    date: data,
+                    date: today,
                     amount_paid: total
                 }).catch(console.log)
             })
@@ -1351,7 +1356,7 @@ router.post('/pay/all', (req,res)=> {
                         user_id: req.cookies.user_id,
                         personal_account_id: req.cookies.user_id,
                         service_id: 2,
-                        date: data,
+                        date: today,
                         amount_paid: total
                     }).catch(console.log)
                 })
@@ -1376,7 +1381,7 @@ router.post('/pay/all', (req,res)=> {
                         user_id: req.cookies.user_id,
                         personal_account_id: req.cookies.user_id,
                         service_id: 3,
-                        date: data,
+                        date: today,
                         amount_paid: total
                     }).catch(console.log)
                 })
@@ -1401,7 +1406,7 @@ router.post('/pay/all', (req,res)=> {
                         user_id: req.cookies.user_id,
                         personal_account_id: req.cookies.user_id,
                         service_id: 4,
-                        date: data,
+                        date: today,
                         amount_paid: total
                     }).catch(console.log)
                 })
@@ -1426,7 +1431,7 @@ router.post('/pay/all', (req,res)=> {
                         user_id: req.cookies.user_id,
                         personal_account_id: req.cookies.user_id,
                         service_id: 5,
-                        date: data,
+                        date: today,
                         amount_paid: total
                     }).catch(console.log)
                 })
@@ -1451,7 +1456,7 @@ router.post('/pay/all', (req,res)=> {
                         user_id: req.cookies.user_id,
                         personal_account_id: req.cookies.user_id,
                         service_id: 7,
-                        date: data,
+                        date: today,
                         amount_paid: total
                     }).catch(console.log)
                 })
@@ -1476,7 +1481,7 @@ router.post('/pay/all', (req,res)=> {
                         user_id: req.cookies.user_id,
                         personal_account_id: req.cookies.user_id,
                         service_id: 8,
-                        date: data,
+                        date: today,
                         amount_paid: total
                     }).catch(console.log)
                 })
@@ -1501,7 +1506,7 @@ router.post('/pay/all', (req,res)=> {
                         user_id: req.cookies.user_id,
                         personal_account_id: req.cookies.user_id,
                         service_id: 9,
-                        date: data,
+                        date: today,
                         amount_paid: total
                     }).catch(console.log)
                 })
@@ -1520,10 +1525,16 @@ router.post('/pay/all', (req,res)=> {
 
 })
 
+router.get('payments', (req,res)=>{
+    res.render('payments.hbs',{
+        title: 'Історія оплат'
+    })
+})
+
 //TODO: need to finish about page
 router.get('/about',(req,res)=>{
     res.render('about.hbs',{
-        title: 'О компании'
+        title: 'Про компанію'
     })
 })
 

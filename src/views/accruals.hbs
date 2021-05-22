@@ -1,36 +1,39 @@
 <body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {{>header}}
-
-    <h1 align="center" id="head"></h1>
-    <hr>
-    <select id="sel" name="sel">
-        <option value="0" selected disabled>Оберіть послугу...</option>
-        <option value="1">Електроенергія</option>
-        <option value="5">Опалення</option>
-        <option value="4">Водорозподіл</option>
-        <option value="2">Газ</option>
-        <option value="3">Поставка газу</option>
-        <option value="7">Вивіз сміття</option>
-        <option value="8">Домофон</option>
-        <option value="9">Послуга з управління домом</option>
-
-    </select>
-
-
+    <div class="side_accruals">
+        <select id="sel" name="sel">
+            <option value="0" selected disabled>Оберіть послугу...</option>
+            <option value="1">Електроенергія</option>
+            <option value="5">Опалення</option>
+            <option value="4">Водорозподіл</option>
+            <option value="2">Газ</option>
+            <option value="3">Поставка газу</option>
+            <option value="7">Вивіз сміття</option>
+            <option value="8">Домофон</option>
+            <option value="9">Послуга з управління домом</option>
+        </select>
+        <div id="ggg">З:&nbsp;<input type="date" id="after"></div>
+        <div id="ggg">До:&nbsp;<input type="date" id="before"></div>
+        <button value="Вивести історію" id="accruals">Вивести історію</button>
+    </div>
+    <div>
+        <h1 align="center" id="head"></h1>
+    </div>
 
 <script>
-    const selectElement = document.querySelector('[id="sel"]');
+    const selectElement = document.querySelector('[id="accruals"]');
 
-    selectElement.addEventListener('change', (event) => {
-        const select = event.target;
+    selectElement.addEventListener('click', (event) => {
+        const after = document.querySelector('[id="after"]');
+        const before = document.querySelector('[id="before"]');
+        const head = document.querySelector('[id="head"]');
+        const select = document.querySelector('[id="sel"]');
         const value = select.value;
         const desc = select.selectedOptions[0].text;
-
-        const head = document.querySelector('[id="head"]');
         head.textContent = desc;
 
-        let url = '/ajax?value=' + value;
+        let url = '/ajax?value=' + value + '&after=' + after.value + '&before=' + before.value;
         fetch(url)
         .then(res => {
             return res.json();
@@ -60,7 +63,23 @@
         })
     });
 </script>
+<script>
+    const data_after = document.querySelector('[id="after"]');
+    const data_before = document.querySelector('[id="before"]');
 
+    let data = new Date();
+    let yyyy = String(data.getFullYear());
+    let mm = String(data.getMonth()+1);
+    let dd = String(data.getDate());
+    if(data.getMonth()+1<10)
+        mm = '0' + mm;
+    if(data.getDate()<10)
+        dd = '0' + dd;
+    data_after.setAttribute('max', `${yyyy}-${mm}-${dd}`);
+    data_before.setAttribute('max', `${yyyy}-${mm}-${dd}`);
+
+
+</script>
 <div id="tab">
 
 </div>
