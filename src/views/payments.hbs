@@ -1,6 +1,7 @@
 <body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {{>header}}
+
     <div class="side_accruals">
         <select id="sel" name="sel">
             <option value="0" selected disabled>Оберіть послугу...</option>
@@ -12,18 +13,20 @@
             <option value="7">Вивіз сміття</option>
             <option value="8">Домофон</option>
             <option value="9">Послуга з управління домом</option>
+            <option value="10">Всі послуги</option>
         </select>
         <div id="data_container">З:&nbsp;<input type="date" id="after"></div>
         <div id="data_container">До:&nbsp;<input type="date" id="before"></div>
-        <button value="Вивести історію" id="accruals">Вивести історію нарахувань</button>
+        <button value="Вивести історію" id="accruals">Вивести історію оплати</button>
     </div>
     <div>
-        <h1 align="center" id="head"></h1>
+        <h2 align="center" id="head"></h2>
     </div>
     <div id="tab" align="center" style="margin: 30px">
 
     </div>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</body>
 <script>
     const selectElement = document.querySelector('[id="accruals"]');
 
@@ -36,42 +39,34 @@
         const desc = select.selectedOptions[0].text;
         head.textContent = desc;
 
-        let url = '/ajax?value=' + value + '&after=' + after.value + '&before=' + before.value;
+        let url = '/payments_ajax?value=' + value + '&after=' + after.value + '&before=' + before.value;
         fetch(url)
-        .then(res => {
-            return res.json();
-        })
-        .then(data => {
-            const table = document.querySelector('[id="tab"]');
-            let str = "";
-            str = `<table border="1" cellspacing="0" class="accruals_table">
+                .then(res => {
+                    return res.json();
+                })
+                .then(data => {
+                    const tab = document.querySelector('[id="tab"]');
+                    let str = "";
+                    str = `<table border="1" cellspacing="0" class="accruals_table">
             <tr align="center" valign="center">
-                <td>Дата внесення показань</td>
-                <td>Показання</td>
-                <td>Сума до сплати</td>
-                <td>Сплачено</td>
+                <td>Дата оплати</td>
+                <td>Сплачена сума</td>
+                <td>За послугу</td>
             </tr>`;
-            for(key in data){
-                str += `<tr align="center" valign="center">
-                                           <td>${data[key].data}</td>
-                                           <td>${data[key].counter_value}</td>
-                                           <td>${data[key].amount_to_pay}</td>`
-                if(data[key].paid === 'true'){
-                    str += `<td>Сплачено</td>`
-                }
-                else{
-                    str += `<td>Не сплачено</td>`
+                    for(key in data){
+                        str += `<tr align="center" valign="center">
+                                           <td>${data[key].date}</td>
+                                           <td>${data[key].amount_paid} грн.</td>
+                                           <td>${data[key].service_name}</td>
+                                      </tr>`;
 
-                }
-                str+= `</tr>`
-
-            }
-            str += "</table>"
-            tab.innerHTML = str;
-        })
-        .catch(err => {
-            console.log(err);
-        })
+                    }
+                    str += "</table>"
+                    tab.innerHTML = str;
+                })
+                .catch(err => {
+                    console.log(err);
+                })
     });
 </script>
 <script>
@@ -91,4 +86,3 @@
 
 
 </script>
-</body>

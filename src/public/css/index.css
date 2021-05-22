@@ -297,7 +297,7 @@ input#before{
     padding: 3px;
     display: inline;
 }
-#ggg{
+#data_container{
     width: 100%;
     box-sizing: border-box;
     display: flex;

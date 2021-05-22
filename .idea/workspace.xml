@@ -26,15 +26,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90f6adb6-3bf4-4529-80f7-75842a0c0a41" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/views/payments.hbs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/classes/Server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/Server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/Accruals.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Accruals.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/Payment.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Payment.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/public/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/css/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/accruals.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/accruals.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/partials/header.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/partials/header.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/personal.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/personal.hbs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,7 +160,7 @@
       <workItem from="1621508240472" duration="710000" />
       <workItem from="1621582852781" duration="733000" />
       <workItem from="1621606664225" duration="4968000" />
-      <workItem from="1621671512483" duration="18150000" />
+      <workItem from="1621671512483" duration="23069000" />
     </task>
     <task id="LOCAL-00001" summary="Added cookies and dynamic view of user name at /personal">
       <created>1616953151658</created>
@@ -250,7 +246,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621680849180</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="accruals date piker added">
+      <created>1621707600837</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1621707600847</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

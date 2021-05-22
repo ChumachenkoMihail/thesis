@@ -694,6 +694,19 @@ router.get('/ajax',(req, res) => {
             res.json(result);
         })
     }
+    if(!req.query.after && !req.query.before) {
+        Accruals.findAll({
+            where: {
+                personal_account_id: req.cookies.user_id,
+                service_id: req.query.value
+            }, raw: true
+        }).then(foundAccruals => {
+            result = foundAccruals;
+
+        }).then(() => {
+            res.json(result);
+        })
+    }
 })
 
 router.get('/pay', (req, res) => {
@@ -1525,10 +1538,126 @@ router.post('/pay/all', (req,res)=> {
 
 })
 
-router.get('payments', (req,res)=>{
-    res.render('payments.hbs',{
-        title: 'Історія оплат'
-    })
+router.get('/payments', (req,res)=>{
+    if(req.cookies.auth === 'true'){
+        res.render('payments.hbs',{
+            title: 'Статистика оплат',
+        })
+    }
+    else{
+        res.redirect('/signin');
+        alert('Something going wrong!');
+    }
+})
+
+router.get('/payments_ajax', (req,res)=>{
+    let result;
+    async function foo (){
+        if(req.query.after && !req.query.before) {
+            if(req.query.value == 10){
+                await Payment.findAll({
+                    where: {
+                        personal_account_id: req.cookies.user_id,
+                        data: {[Op.gte]: req.query.after}
+                    }, raw: true
+                }).then(foundAccruals => {
+                    result = foundAccruals;
+                })
+            }else {
+                await Payment.findAll({
+                    where: {
+                        personal_account_id: req.cookies.user_id,
+                        service_id: req.query.value,
+                        data: {[Op.gte]: req.query.after}
+                    }, raw: true
+                }).then(foundAccruals => {
+                    result = foundAccruals;
+                })
+            }
+        }
+        if(!req.query.after && req.query.before) {
+            if(req.query.value == 10){
+                await Payment.findAll({
+                    where: {
+                        personal_account_id: req.cookies.user_id,
+                        data: {[Op.lte]: req.query.before}
+                    }, raw: true
+                }).then(foundAccruals => {
+                    result = foundAccruals;
+                })
+            }
+            else{
+                await Payment.findAll({
+                    where: {
+                        personal_account_id: req.cookies.user_id,
+                        service_id: req.query.value,
+                        data: {[Op.lte]: req.query.before}
+                    }, raw: true
+                }).then(foundAccruals => {
+                    result = foundAccruals;
+                })
+            }
+
+        }
+        if(req.query.after && req.query.before) {
+            if(req.query.value == 10){
+                await Payment.findAll({
+                    where: {
+                        personal_account_id: req.cookies.user_id,
+                        data: {[Op.gte]: req.query.after,[Op.lte]: req.query.before}
+                    }, raw: true
+                }).then(foundAccruals => {
+                    result = foundAccruals;
+                })
+            }
+            else{
+                await Payment.findAll({
+                    where: {
+                        personal_account_id: req.cookies.user_id,
+                        service_id: req.query.value,
+                        data: {[Op.gte]: req.query.after,[Op.lte]: req.query.before}
+                    }, raw: true
+                }).then(foundAccruals => {
+                    result = foundAccruals;
+                })
+            }
+        }
+        if(!req.query.after && !req.query.before) {
+            if(req.query.value == 10){
+                await Payment.findAll({
+                    where: {
+                        personal_account_id: req.cookies.user_id,
+                    }, raw: true
+                }).then(foundAccruals => {
+                    result = foundAccruals;
+                })
+            }
+            else{
+                await Payment.findAll({
+                    where: {
+                        personal_account_id: req.cookies.user_id,
+                        service_id: req.query.value
+                    }, raw: true
+                }).then(foundAccruals => {
+                    result = foundAccruals;
+                })
+            }
+        }
+        for(let key in result){
+            switch(result[key].service_id){
+                case 1: result[key].service_name = 'Електроенергія';break;
+                case 2: result[key].service_name = 'Газ';break;
+                case 3: result[key].service_name = 'Поставка газу';break;
+                case 4: result[key].service_name = 'Водорозподіл';break;
+                case 5: result[key].service_name = 'Опалення';break;
+                case 7: result[key].service_name = 'Вивіз сміття';break;
+                case 8: result[key].service_name = 'Домофон';break;
+                case 9: result[key].service_name = 'Послуга з управління домом';break;
+            }
+        }
+        res.json(result);
+    }
+    foo();
 })
 
 //TODO: need to finish about page
