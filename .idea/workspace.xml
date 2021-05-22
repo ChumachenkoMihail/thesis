@@ -26,11 +26,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90f6adb6-3bf4-4529-80f7-75842a0c0a41" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/views/payments.hbs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/public/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/css/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/accruals.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/accruals.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/enter.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/enter.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_all.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_all.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_domofon.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_domofon.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_gas.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_gas.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_musor.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_musor.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_otoplenie.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_otoplenie.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_sdpt.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_sdpt.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_svet.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_svet.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_voda.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_voda.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/payments.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/payments.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/registration.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/registration.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/signin.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/signin.hbs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,7 +171,7 @@
       <workItem from="1621508240472" duration="710000" />
       <workItem from="1621582852781" duration="733000" />
       <workItem from="1621606664225" duration="4968000" />
-      <workItem from="1621671512483" duration="23069000" />
+      <workItem from="1621671512483" duration="31039000" />
     </task>
     <task id="LOCAL-00001" summary="Added cookies and dynamic view of user name at /personal">
       <created>1616953151658</created>
@@ -253,7 +264,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621707600847</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="payments page created">
+      <created>1621713848476</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1621713848476</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -297,7 +315,8 @@
     <MESSAGE value="validation included" />
     <MESSAGE value="payments done &amp; some more" />
     <MESSAGE value="accruals date piker added" />
-    <option name="LAST_COMMIT_MESSAGE" value="accruals date piker added" />
+    <MESSAGE value="payments page created" />
+    <option name="LAST_COMMIT_MESSAGE" value="payments page created" />
   </component>
   <component name="WindowStateProjectService">
     <state x="453" y="166" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1612771049021">

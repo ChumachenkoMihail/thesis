@@ -1,52 +1,59 @@
 <body>
 {{>header}}
 <div style="width: 100%; height: 100%">
-    <form method="post" action="/enter" onsubmit="return validate();">
+    <form style="margin: 0; width: 100%" method="post" action="/enter" onsubmit="return validate();">
         <div align="center" class="enter-table">
             <table border="1" cellspacing="0">
                 <tr align="center" valign="center" class="table-grey">
-                    <td rowspan="2">Послуга</td>
-                    <td rowspan="2">Початкове значення</td>
-                    <td rowspan="2">Заводський №</td>
-                    <td rowspan="2">Особистий рахунок</td>
-                    <td colspan="2">Останні показання</td>
-                    <td rowspan="2">Введіть нові показання</td>
+                    <td rowspan="2" class="td_padding">Послуга</td>
+                    <td rowspan="2" class="td_padding">Початкове значення</td>
+                    <td rowspan="2" class="td_padding">Заводський №</td>
+                    <td rowspan="2" class="td_padding">Особистий рахунок</td>
+                    <td colspan="2" class="td_padding">Останні показання</td>
+                    <td rowspan="2" class="td_padding">Введіть нові показання</td>
                 </tr>
                 <tr align="center" valign="center" class="table-grey">
-                    <td>Дата</td>
-                    <td>Значення</td>
+                    <td class="td_padding">Дата</td>
+                    <td class="td_padding">Значення</td>
                 </tr>
                 <tr align="center" valign="center" >
-                    <td>Електроенергія</td>
-                    <td>{{electro_start_value}}</td>
-                    <td>{{electro_counter_number}}</td>
-                    <td>{{schet.electro}}</td>
-                    <td>{{electro_date}}</td>
-                    <td id="electro_last_value">{{electro_last_value}}</td>
-                    <td><input type="text" name="electro" id="electro_input" oninput="onlyDigits(this)"></td>
+                    <td class="td_padding">Електроенергія</td>
+                    <td class="td_padding">{{electro_start_value}}</td>
+                    <td class="td_padding">{{electro_counter_number}}</td>
+                    <td class="td_padding">{{schet.electro}}</td>
+                    <td class="td_padding" nowrap>{{electro_date}}</td>
+                    <td class="td_padding" id="electro_last_value">{{electro_last_value}}</td>
+                    <td class="td_padding"><input type="text" name="electro" id="electro_input" oninput="onlyDigits(this)"></td>
                 </tr>
                 <tr align="center" valign="center" class="table-grey">
-                    <td>Водорозподіл</td>
-                    <td>{{water_start_value}}</td>
-                    <td>{{water_counter_number}}</td>
-                    <td>{{schet.water}}</td>
-                    <td>{{water_date}}</td>
-                    <td id="water_last_value">{{water_last_value}}</td>
-                    <td><input type="text" name="water" class="table-grey" id="water_input" oninput="onlyDigits(this)"></td>
+                    <td class="td_padding">Водорозподіл</td>
+                    <td class="td_padding">{{water_start_value}}</td>
+                    <td class="td_padding">{{water_counter_number}}</td>
+                    <td class="td_padding">{{schet.water}}</td>
+                    <td class="td_padding" nowrap>{{water_date}}</td>
+                    <td class="td_padding" id="water_last_value">{{water_last_value}}</td>
+                    <td class="td_padding"><input type="text" name="water" class="table-grey" id="water_input" oninput="onlyDigits(this)"></td>
                 </tr>
                 <tr align="center" valign="center">
-                    <td>Газ</td>
-                    <td>{{gas_start_value}}</td>
-                    <td>{{gas_counter_number}}</td>
-                    <td>{{schet.gas}}</td>
-                    <td>{{gas_date}}</td>
-                    <td id="gas_last_value">{{gas_last_value}}</td>
-                    <td><input type="text" name="gas" id="gas_input" oninput="onlyDigits(this)"></td>
+                    <td class="td_padding">Газ</td>
+                    <td class="td_padding">{{gas_start_value}}</td>
+                    <td class="td_padding">{{gas_counter_number}}</td>
+                    <td class="td_padding">{{schet.gas}}</td>
+                    <td class="td_padding" nowrap>{{gas_date}}</td>
+                    <td class="td_padding" id="gas_last_value">{{gas_last_value}}</td>
+                    <td class="td_padding"><input type="text" name="gas" id="gas_input" oninput="onlyDigits(this)"></td>
                 </tr>
             </table>
+
+        </div>
+        <div style="display: flex; justify-content: center;" id="data_container">
+            Показання за:&nbsp;<input type="date" id="data" name="date" required>
+        </div>
+        <div style="display: flex; justify-content: center">
             <input type="submit" value="Занести показання" class="enter-button" align="center">
         </div>
     </form>
+
     <br><br><br><br><br><br>
 </div>
 <script>
@@ -85,5 +92,20 @@
         let result = entered && valid;
         return result;
     }
+</script>
+<script>
+    const data_ = document.querySelector('[id="data"]');
+
+    let data = new Date();
+    let yyyy = String(data.getFullYear());
+    let mm = String(data.getMonth()+1);
+    let dd = String(data.getDate());
+    if(data.getMonth()+1<10)
+        mm = '0' + mm;
+    if(data.getDate()<10)
+        dd = '0' + dd;
+    data_.setAttribute('max', `${yyyy}-${mm}-${dd}`);
+    data_.setAttribute('value', `${yyyy}-${mm}-${dd}`);
+
 </script>
 </body>

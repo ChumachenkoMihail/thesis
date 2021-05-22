@@ -42,25 +42,25 @@
             return res.json();
         })
         .then(data => {
-            const table = document.querySelector('[id="tab"]');
+            const tab = document.querySelector('[id="tab"]');
             let str = "";
             str = `<table border="1" cellspacing="0" class="accruals_table">
             <tr align="center" valign="center">
-                <td>Дата внесення показань</td>
-                <td>Показання</td>
-                <td>Сума до сплати</td>
-                <td>Сплачено</td>
+                <td class="td_padding">Дата внесення показань</td>
+                <td class="td_padding">Показання</td>
+                <td class="td_padding">Сума до сплати</td>
+                <td class="td_padding">Сплачено</td>
             </tr>`;
             for(key in data){
                 str += `<tr align="center" valign="center">
-                                           <td>${data[key].data}</td>
-                                           <td>${data[key].counter_value}</td>
-                                           <td>${data[key].amount_to_pay}</td>`
+                                           <td class="td_padding">${data[key].data}</td>
+                                           <td class="td_padding">${data[key].counter_value}</td>
+                                           <td class="td_padding">${data[key].amount_to_pay}</td>`
                 if(data[key].paid === 'true'){
-                    str += `<td>Сплачено</td>`
+                    str += `<td class="td_padding">Сплачено</td>`
                 }
                 else{
-                    str += `<td>Не сплачено</td>`
+                    str += `<td class="td_padding">Не сплачено</td>`
 
                 }
                 str+= `</tr>`

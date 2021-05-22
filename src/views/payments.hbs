@@ -49,15 +49,15 @@
                     let str = "";
                     str = `<table border="1" cellspacing="0" class="accruals_table">
             <tr align="center" valign="center">
-                <td>Дата оплати</td>
-                <td>Сплачена сума</td>
-                <td>За послугу</td>
+                <td class="td_padding">Дата оплати</td>
+                <td class="td_padding">Сплачена сума</td>
+                <td class="td_padding">За послугу</td>
             </tr>`;
                     for(key in data){
                         str += `<tr align="center" valign="center">
-                                           <td>${data[key].date}</td>
-                                           <td>${data[key].amount_paid} грн.</td>
-                                           <td>${data[key].service_name}</td>
+                                           <td class="td_padding">${data[key].date}</td>
+                                           <td class="td_padding">${data[key].amount_paid} грн.</td>
+                                           <td class="td_padding">${data[key].service_name}</td>
                                       </tr>`;
 
                     }
@@ -83,6 +83,4 @@
         dd = '0' + dd;
     data_after.setAttribute('max', `${yyyy}-${mm}-${dd}`);
     data_before.setAttribute('max', `${yyyy}-${mm}-${dd}`);
-
-
 </script>

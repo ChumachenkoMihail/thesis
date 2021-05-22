@@ -126,7 +126,7 @@ a.footer-link{
     justify-content: center;
     align-items: center;
 }
-input:not(#after, #before){
+input:not(#after, #before, [type="submit"]){
     border: none;
     height: 5vh;
     margin: 1vh;
@@ -142,7 +142,7 @@ form{
     margin-bottom: 5vh;
     text-align: center;
 }
-.reg-input{
+#spec.reg-input{
     width: 100%;
     padding-bottom: 1vh;
     border: none;
@@ -152,14 +152,18 @@ form{
     outline: none;
 }
 .reg-input:valid{
-    border-bottom: 2px solid#8beb74;
+    border-bottom: 2px solid #8beb74;
     border-radius: 3px;
 
 }
-.reg-button{
+#spec.reg-button{
     color: black;
     border-radius: 10px;
     border: 1px solid black;
+    width: 80%;
+    height: 32px;
+    margin: 15px;
+    font-size: 4vh;
 }
 
 /*Index page styles*/
@@ -261,15 +265,23 @@ ul{
     height: 100%;
 }
 .enter-button{
-    background-color: #4c81c2;
-    border-radius: 10px;
-    border: 1px solid black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: 5px;
+    border: 2px solid black;
+    text-align: center;
+    padding: 10px 5px;
+    margin: 10px;
+    font-size: 4vh;
+
 }
 .table-grey{
-    background-color: #ccc5c6;
+    background-color: #e5dcdd;
+}
+input#data{
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 32px;
+    margin: 5px 0;
+    padding: 3px;
 }
 
 /*accruals page*/
@@ -319,7 +331,9 @@ button#accruals{
     box-sizing: border-box;
 
 }
-
+.td_padding{
+   padding: 3px 5px;
+}
 /*pay select page*/
 .pay-select-row{
     display: flex;

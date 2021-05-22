@@ -473,10 +473,14 @@ router.get('/enter', (req,res)=>{
 router.post('/enter' ,(req, res) => {
     if(!req.body) return res.sendStatus(400);
 
-    const {electro, gas, water} = req.body;
+    const {electro, gas, water, date} = req.body;
     let electro_rate, gas_rate, water_rate, postavka_gasa_rate;
 
-    let today = new Date();
+    let today = new Date(date);
+    if(today.getDate() > 5){
+        today.setMonth(today.getMonth()+1);
+        today.setDate(1);
+    }
 
     let previleges = 1;
 
@@ -730,10 +734,10 @@ router.get('/pay/svet', (req,res) => {
                 service_id: 1,
                 paid: 'false'
             }})
+            .then(total => {
+                total_to_show = total;
+            })
         }
-    })
-    .then(total => {
-        total_to_show = total;
     })
     .then(()=>{
         res.render('pay_svet.hbs', {
@@ -759,13 +763,13 @@ router.get('/pay/voda', (req,res) => {
                         service_id: 4,
                         paid: 'false'
                     }})
+                    .then(total => {
+                        total_to_show = total;
+                    })
             }
         })
-        .then(total => {
-            total_to_show = total;
-        })
         .then(()=>{
-            res.render('pay_svet.hbs', {
+            res.render('pay_voda.hbs', {
                 title: 'Сплатити водорозподіл',
                 accruals: accruals_to_show,
                 total: total_to_show.toFixed(2)
@@ -788,14 +792,13 @@ router.get('/pay/otoplenie', (req,res) => {
                         service_id: 5,
                         paid: 'false'
                     }})
+                    .then(total => {
+                        total_to_show = total;
+                    })
             }
         })
-        .then(total => {
-            console.log(total);
-            total_to_show = total;
-        })
         .then(()=>{
-            res.render('pay_svet.hbs', {
+            res.render('pay_otoplenie.hbs', {
                 title: 'Сплатити опалення',
                 accruals: accruals_to_show,
                 total: total_to_show.toFixed(2)
@@ -818,14 +821,13 @@ router.get('/pay/musor', (req,res) => {
                         service_id: 7,
                         paid: 'false'
                     }})
+                    .then(total => {
+                        total_to_show = total;
+                    })
             }
         })
-        .then(total => {
-            console.log(total);
-            total_to_show = total;
-        })
         .then(()=>{
-            res.render('pay_svet.hbs', {
+            res.render('pay_musor.hbs', {
                 title: 'Сплатити вивіз сміття',
                 accruals: accruals_to_show,
                 total: total_to_show.toFixed(2)
@@ -848,14 +850,13 @@ router.get('/pay/domofon', (req,res) => {
                         service_id: 8,
                         paid: 'false'
                     }})
+                    .then(total => {
+                        total_to_show = total;
+                    })
             }
         })
-        .then(total => {
-            console.log(total);
-            total_to_show = total;
-        })
         .then(()=>{
-            res.render('pay_svet.hbs', {
+            res.render('pay_domofon.hbs', {
                 title: 'Сплатити домофон',
                 accruals: accruals_to_show,
                 total: total_to_show.toFixed(2)
@@ -878,14 +879,13 @@ router.get('/pay/sdpt', (req,res) => {
                         service_id: 9,
                         paid: 'false'
                     }})
+                    .then(total => {
+                        total_to_show = total;
+                    })
             }
         })
-        .then(total => {
-            console.log(total);
-            total_to_show = total;
-        })
         .then(()=>{
-            res.render('pay_svet.hbs', {
+            res.render('pay_sdpt.hbs', {
                 title: 'Сплатити послугу з управління домом',
                 accruals: accruals_to_show,
                 total: total_to_show.toFixed(2)

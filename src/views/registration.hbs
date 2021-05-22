@@ -7,31 +7,31 @@
         </div>
         <div class="reg-group">
             <input type="text" class="reg-input" placeholder="Прізвище" name="userSurname" required pattern="[А-ЯІЇЄ]+[а-яіїє]+ *"
-            title="Прізвище має починатися з великої літери">
+            title="Прізвище має починатися з великої літери" id="spec">
         </div>
         <div class="reg-group">
-            <input type="text" class="reg-input" placeholder="Ім'я" name="userName" required pattern="[А-ЯІЇЄ]+[а-яіїє]+ *" title="Ім'я має починатися з великої літери">
+            <input type="text" class="reg-input" placeholder="Ім'я" name="userName" required pattern="[А-ЯІЇЄ]+[а-яіїє]+ *" title="Ім'я має починатися з великої літери" id="spec">
         </div>
         <div class="reg-group">
-            <input type="text" class="reg-input" placeholder="По батькові" name="userLastName" required pattern="[А-ЯІЇЄ]+[а-яіїє]+ *" title="Ім'я по батькові має починатися з великої літери">
+            <input type="text" class="reg-input" placeholder="По батькові" name="userLastName" required pattern="[А-ЯІЇЄ]+[а-яіїє]+ *" title="Ім'я по батькові має починатися з великої літери" id="spec">
         </div>
         <div class="reg-group">
-            <input type="email" class="reg-input" placeholder="E-mail" name="userEmail" required>
+            <input type="email" class="reg-input" placeholder="E-mail" name="userEmail" required id="spec">
         </div>
         <div class="reg-group">
-            <input type="text" class="reg-input" placeholder="Вулиця" name="userAddress" required pattern="^[А-ЯІЇЄ|а-яіїє]+\.{0,1}[А-ЯІЇЄ|а-яіїє]+ *" title="Вулиця не має містити цифр">
+            <input type="text" class="reg-input" placeholder="Вулиця" name="userAddress" required pattern="^[А-ЯІЇЄ|а-яіїє]+\.{0,1}[А-ЯІЇЄ|а-яіїє]+ *" title="Вулиця не має містити цифр" id="spec">
         </div>
         <div class="reg-group">
-            <input type="text" class="reg-input" placeholder="№ дому" name="userHome" required pattern="^\d{1,3}$|^\d{1,3}(\\\d)?$" title="Номер дому може містити лише цифри. Корпус вказується через \ (151\1)">
+            <input type="text" class="reg-input" placeholder="№ дому" name="userHome" required pattern="^\d{1,3}$|^\d{1,3}(\\\d)?$" title="Номер дому може містити лише цифри. Корпус вказується через \ (151\1)" id="spec">
         </div>
         <div class="reg-group">
-            <input type="text" class="reg-input" placeholder="Квартира" name="userFlat" required pattern="\d+" title="Номер квартири може містити лише цифри">
+            <input type="text" class="reg-input" placeholder="Квартира" name="userFlat" required pattern="\d+" title="Номер квартири може містити лише цифри" id="spec">
         </div>
         <div class="reg-group">
-            <input type="password" class="reg-input" placeholder="Пароль" name="userPass" required pattern="[\w]{6,12}" title="Пароль має містити від 6 до 12 символів, складатися з букв латинського алфавіту та цифр">
+            <input type="password" class="reg-input" placeholder="Пароль" name="userPass" required pattern="[\w]{6,12}" title="Пароль має містити від 6 до 12 символів, складатися з букв латинського алфавіту та цифр" id="spec">
         </div>
         <div class="reg-group">
-            <input type="submit" class="reg-button" value="Реєстрація">
+            <input type="submit" class="reg-button" value="Реєстрація" id="spec">
         </div>
     </form>
 </div>
