@@ -21,13 +21,13 @@ function random(min,max){
 
 router.get('/', (req,res)=>{
     res.render('index.hbs',{
-        title : 'Коммунальные услуги'
+        title : 'Комунальні послуги'
     })
 })
 
 router.get('/registration', (req,res) =>{
     res.render('registration.hbs',{
-        title : 'Регистрация'
+        title : 'Реєстрація'
     })
 })
 
@@ -101,12 +101,12 @@ router.post('/registration', (req,res)=>{
                             }
                         }
                         if(sex === 1){
-                            name = names_male[random(1,5)];
-                            lastname = lastnames_male[random(1,5)];
+                            name = names_male[random(0,4)];
+                            lastname = lastnames_male[random(0,4)];
                         }
                         else{
-                            name = names_female[random(1,5)];
-                            lastname = lastnames_female[random(1,5)];
+                            name = names_female[random(0,4)];
+                            lastname = lastnames_female[random(0,4)];
                         }
                         Tenants.create({
                             surname: surn,
@@ -171,7 +171,7 @@ router.post('/registration', (req,res)=>{
 
 router.get('/signin', (req,res)=>{
     res.render('signin.hbs',{
-        title : 'Войти'
+        title : 'Увійти'
     })
 })
 
@@ -183,20 +183,26 @@ router.post('/signin', (req, res) => {
 
     User.findOne({where:{
             login: login
-            //password: password
         }, raw: true}).then(foundUser=>{
             if(foundUser) {
-                Personal_account.findOne({
-                    where: {
-                        personal_account_id: foundUser.personal_account_id
-                    }
-                }).then(foundAccount => {
-                    console.log('Authenticated');
-                    res.cookie('auth', 'true');
-                    res.cookie('user_id', foundAccount.personal_account_id);
-                    res.cookie('personal_id', foundUser.user_id);
-                    return res.redirect('/personal');
-                })
+                let validPassword = bcrypt.compareSync(password, foundUser.password);
+                if(validPassword) {
+                    Personal_account.findOne({
+                        where: {
+                            personal_account_id: foundUser.personal_account_id
+                        }
+                    }).then(foundAccount => {
+                        console.log('Authenticated');
+                        res.cookie('auth', 'true');
+                        res.cookie('user_id', foundAccount.personal_account_id);
+                        res.cookie('personal_id', foundUser.user_id);
+                        return res.redirect('/personal');
+                    })
+                }
+                else{
+                    res.redirect('/signin');
+                    console.log('Invalid password');
+                }
             }
             else {
                 res.redirect('/signin');
@@ -279,7 +285,7 @@ router.get('/personal',(req,res)=>{
         })
         .then(foundAccount => {
             res.render('personal.hbs',{
-                title: 'Личный кабинет',
+                title: 'Про квартиру',
                 fullName: username ,
                 street: foundAccount.street,
                 house : foundAccount.house,
@@ -299,9 +305,9 @@ router.get('/personal',(req,res)=>{
 
 router.get('/enter', (req,res)=>{
     if(req.cookies.auth === 'true'){
-        let electro_start_value = 0, electro_counter_number = "", electro_date = "", electro_last_value = 1;
-        let gas_start_value = 0, gas_counter_number = "", gas_date = "", gas_last_value = 1;
-        let water_start_value = 0, water_counter_number = "", water_date = "", water_last_value = 1;
+        let electro_start_value = 0, electro_counter_number = "", electro_date = "", electro_last_value = "";
+        let gas_start_value = 0, gas_counter_number = "", gas_date = "", gas_last_value = "";
+        let water_start_value = 0, water_counter_number = "", water_date = "", water_last_value = "";
         let schet = {};
         Counter.findOne({
             where: {
@@ -440,7 +446,7 @@ router.get('/enter', (req,res)=>{
             })
             .then(() => {
                 res.render('enter.hbs', {
-                    title: 'Внести показания',
+                    title: 'Внести показання',
                     electro_start_value: electro_start_value,
                     electro_counter_number: electro_counter_number,
                     electro_date: electro_date,
@@ -537,11 +543,7 @@ router.post('/enter' ,(req, res) => {
                     }).catch('Invalid service found');
                 })
             })
-
-
-
         }
-
         if(gas){
             let prev_gas = 0;
             Counter.findOne({where: {
@@ -597,7 +599,6 @@ router.post('/enter' ,(req, res) => {
                 })
             })
         }
-
         if(water){
             let prev_water = 0;
             Counter.findOne({where: {
@@ -644,7 +645,7 @@ router.post('/enter' ,(req, res) => {
 router.get('/accruals', (req, res) => {
     if(req.cookies.auth === 'true'){
         res.render('accruals.hbs',{
-            title: 'Статистика начислений',
+            title: 'Статистика нарахувань',
         })
     }
     else{
@@ -689,14 +690,13 @@ router.get('/pay/svet', (req,res) => {
         }
     })
     .then(total => {
-        console.log(total);
         total_to_show = total;
     })
     .then(()=>{
         res.render('pay_svet.hbs', {
             title: 'Сплатити електроенергію',
             accruals: accruals_to_show,
-            total: total_to_show
+            total: total_to_show.toFixed(2)
         })
     })
 })
@@ -719,14 +719,13 @@ router.get('/pay/voda', (req,res) => {
             }
         })
         .then(total => {
-            console.log(total);
             total_to_show = total;
         })
         .then(()=>{
             res.render('pay_svet.hbs', {
                 title: 'Сплатити водорозподіл',
                 accruals: accruals_to_show,
-                total: total_to_show
+                total: total_to_show.toFixed(2)
             })
         })
 })
@@ -756,7 +755,7 @@ router.get('/pay/otoplenie', (req,res) => {
             res.render('pay_svet.hbs', {
                 title: 'Сплатити опалення',
                 accruals: accruals_to_show,
-                total: total_to_show
+                total: total_to_show.toFixed(2)
             })
         })
 })
@@ -786,7 +785,7 @@ router.get('/pay/musor', (req,res) => {
             res.render('pay_svet.hbs', {
                 title: 'Сплатити вивіз сміття',
                 accruals: accruals_to_show,
-                total: total_to_show
+                total: total_to_show.toFixed(2)
             })
         })
 })
@@ -816,7 +815,7 @@ router.get('/pay/domofon', (req,res) => {
             res.render('pay_svet.hbs', {
                 title: 'Сплатити домофон',
                 accruals: accruals_to_show,
-                total: total_to_show
+                total: total_to_show.toFixed(2)
             })
         })
 })
@@ -846,7 +845,7 @@ router.get('/pay/sdpt', (req,res) => {
             res.render('pay_svet.hbs', {
                 title: 'Сплатити послугу з управління домом',
                 accruals: accruals_to_show,
-                total: total_to_show
+                total: total_to_show.toFixed(2)
             })
         })
 })
@@ -874,7 +873,7 @@ router.get('/pay/gas', (req,res) => {
 
         })
         .then(()=>{
-            Accruals.findAll({where:{
+            return Accruals.findAll({where:{
                     personal_account_id: req.cookies.user_id,
                     service_id: 3,
                     paid: 'false'
@@ -882,13 +881,14 @@ router.get('/pay/gas', (req,res) => {
                 .then(found_accruals => {
                     found_postavka_gasa_accrual = found_accruals;
                     if(found_accruals.length != 0){
-                        Accruals.sum('amount_to_pay', {where:{
+                        return Accruals.sum('amount_to_pay', {where:{
                                 personal_account_id: req.cookies.user_id,
                                 service_id: 3,
                                 paid: 'false'
                             }})
                             .then(total => {
                                 total_postavka_gasa = total;
+                                return 0;
                             })
                     }
 
@@ -898,7 +898,7 @@ router.get('/pay/gas', (req,res) => {
             let total = total_postavka_gasa + total_gas;
             res.render('pay_gas.hbs', {
                 title: 'Сплатити газ',
-                total: total,
+                total: total.toFixed(2),
                 found_gas_accruals: found_gas_accruals,
                 found_postavka_gasa_accrual: found_postavka_gasa_accrual
             })
@@ -908,7 +908,7 @@ router.get('/pay/gas', (req,res) => {
 router.get('/pay/all',(req,res)=>{
     let total = 0;
     let svet_accrual, gas_accrual, postavka_gasa_accrual, water_accrual, otoplenie_accrual, musor_accrual, domofon_accrual, sdpt_accrual;
-    /*Accruals.sum('amount_to_pay', {where:{
+    Accruals.sum('amount_to_pay', {where:{
         personal_account_id: req.cookies.user_id,
         service_id: 1,
         paid: 'false'
@@ -1039,7 +1039,7 @@ router.get('/pay/all',(req,res)=>{
     .then(() => {
         res.render('pay_all.hbs', {
             title: 'Сплатити все',
-            total: total,
+            total: total.toFixed(2),
             svet_accrual: svet_accrual,
             gas_accrual: gas_accrual,
             postavka_gasa_accrual: postavka_gasa_accrual,
@@ -1049,18 +1049,6 @@ router.get('/pay/all',(req,res)=>{
             domofon_accrual: domofon_accrual,
             sdpt_accrual: sdpt_accrual
         })
-    })*/
-    res.render('pay_all.hbs', {
-        title: 'Сплатити все',
-        total: total,
-        svet_accrual: svet_accrual,
-        gas_accrual: gas_accrual,
-        postavka_gasa_accrual: postavka_gasa_accrual,
-        water_accrual: water_accrual,
-        otoplenie_accrual: otoplenie_accrual,
-        musor_accrual: musor_accrual,
-        domofon_accrual: domofon_accrual,
-        sdpt_accrual: sdpt_accrual
     })
 })
 

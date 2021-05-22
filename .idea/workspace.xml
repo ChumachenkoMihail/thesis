@@ -27,10 +27,21 @@
   <component name="ChangeListManager">
     <list default="true" id="90f6adb6-3bf4-4529-80f7-75842a0c0a41" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/public/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/css/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/classes/Server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/Server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cronjob/cron.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/cronjob/cron.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/accruals.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/accruals.hbs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/enter.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/enter.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/registration.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/registration.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/signin.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/signin.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/partials/footer.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/partials/footer.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/partials/header.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/partials/header.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_all.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_all.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_domofon.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_domofon.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_gas.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_gas.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_musor.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_musor.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_otoplenie.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_otoplenie.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_sdpt.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_sdpt.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_svet.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_svet.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pay_voda.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pay_voda.hbs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +162,16 @@
       <workItem from="1620709701944" duration="15824000" />
       <workItem from="1620805925961" duration="16696000" />
       <workItem from="1620905830526" duration="16260000" />
-      <workItem from="1620989713088" duration="30238000" />
+      <workItem from="1620989713088" duration="35351000" />
+      <workItem from="1621193059250" duration="2637000" />
+      <workItem from="1621233386785" duration="3734000" />
+      <workItem from="1621270585518" duration="2605000" />
+      <workItem from="1621322263097" duration="3260000" />
+      <workItem from="1621412262557" duration="12929000" />
+      <workItem from="1621508240472" duration="710000" />
+      <workItem from="1621582852781" duration="733000" />
+      <workItem from="1621606664225" duration="4968000" />
+      <workItem from="1621671512483" duration="3353000" />
     </task>
     <task id="LOCAL-00001" summary="Added cookies and dynamic view of user name at /personal">
       <created>1616953151658</created>
@@ -223,7 +243,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621078612641</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="validation included">
+      <created>1621111037847</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1621111037847</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -264,7 +291,8 @@
     <MESSAGE value="fixing some bugs &amp; new pay.hbs file" />
     <MESSAGE value="not finished payment" />
     <MESSAGE value="registration updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="registration updated" />
+    <MESSAGE value="validation included" />
+    <option name="LAST_COMMIT_MESSAGE" value="validation included" />
   </component>
   <component name="WindowStateProjectService">
     <state x="453" y="166" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1612771049021">

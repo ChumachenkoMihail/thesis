@@ -9,11 +9,12 @@ const Counter = require('../models/Counter');
 const CronJob = require('cron').CronJob;
 
 let komunalka = new CronJob('0 1 0 1 * *', function (){
+    console.log('cron started');
     // 0 1 0 1 * *
-    //TODO: не работает крон
     Personal_account.findAll({attributes:['personal_account_id', 'square']})
         .then(foundAccounts=>{
-            for(key in foundAccounts) {
+            async function foo(){
+            for(let key in foundAccounts) {
                 let vivoz_musora = 0;
 
                 let today = new Date();
@@ -24,40 +25,37 @@ let komunalka = new CronJob('0 1 0 1 * *', function (){
                 let data = dd + '.' + mm + '.' + yyyy;
 
                 let previleges;
+                let count_of_tenants;
 
-                Tenants.findAll({where:{
+                await Tenants.findAll({where:{
                     personal_account_id: foundAccounts[key].personal_account_id
                     }}).then(tenants => {
                         let c_of_tenants = 0;
                         let percent = 0;
-                        for(k in tenants){
+                        for(let k in tenants){
                             c_of_tenants++;
                             percent += tenants[k].percent_of_privileges;
                         }
                         previleges = percent / c_of_tenants;
+                        count_of_tenants = c_of_tenants;
                 })
-                //вывоз мусора
-                Tenants.count({
-                    where: {
-                        personal_account_id: foundAccounts[key].personal_account_id
-                    }
-                }).then(countOfTenants =>{
-                    Services.findOne({where:{service_id:7}})
-                        .then(service => {
-                            vivoz_musora = countOfTenants * service.rate * previleges;
 
-                            Accruals.create({
-                                personal_account_id: foundAccounts[key].personal_account_id,
-                                service_id: 7,
-                                data: data,
-                                counter_value: 0,
-                                amount_to_pay: vivoz_musora,
-                                paid: 'false'
-                            })
+                //вывоз мусора
+                await Services.findOne({where:{service_id:7}})
+                    .then(service => {
+                        vivoz_musora = count_of_tenants * service.rate * previleges;
+
+                        Accruals.create({
+                            personal_account_id: foundAccounts[key].personal_account_id,
+                            service_id: 7,
+                            data: data,
+                            counter_value: 0,
+                            amount_to_pay: vivoz_musora,
+                            paid: 'false'
                         })
-                })
+                    })
                 //Домофон
-                Services.findOne({where:{service_id:8}})
+                await Services.findOne({where:{service_id:8}})
                     .then(service => {
                         Accruals.create({
                             personal_account_id: foundAccounts[key].personal_account_id,
@@ -69,7 +67,7 @@ let komunalka = new CronJob('0 1 0 1 * *', function (){
                         })
                     })
                 //СДПТ
-                Services.findOne({where:{service_id:9}})
+                await Services.findOne({where:{service_id:9}})
                     .then(service => {
                         let sdpt_to_pay = service.rate * foundAccounts[key].square * previleges;
                         Accruals.create({
@@ -83,7 +81,7 @@ let komunalka = new CronJob('0 1 0 1 * *', function (){
                     })
                 //Отопление
                 if(month === 1 || month === 2 || month === 3 || month === 11 || month === 12) {
-                    Services.findOne({where: {service_id: 5}})
+                    await Services.findOne({where: {service_id: 5}})
                         .then(service => {
                             let heating_to_pay = service.rate * foundAccounts[key].square * previleges;
                             Accruals.create({
@@ -100,7 +98,9 @@ let komunalka = new CronJob('0 1 0 1 * *', function (){
                         })
                 }
             }
-    })
+    }
+    foo();
+})
 },null,true,'Europe/Kiev')
 
 module.exports = komunalka;
