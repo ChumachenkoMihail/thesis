@@ -334,6 +334,11 @@ button#accruals{
 .td_padding{
    padding: 3px 5px;
 }
+.chart{
+    width: 500px;
+    height: 500px;
+    justify-content: center;
+}
 /*pay select page*/
 .pay-select-row{
     display: flex;

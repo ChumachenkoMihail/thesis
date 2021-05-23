@@ -1,5 +1,6 @@
 <body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js"></script>
 {{>header}}
     <div class="side_accruals">
         <select id="sel" name="sel">
@@ -23,6 +24,10 @@
     <div id="tab" align="center" style="margin: 30px">
 
     </div>
+    <div align="center">
+        <div class="chart" id="chart_container">
+        </div>
+    </div>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <script>
     const selectElement = document.querySelector('[id="accruals"]');
@@ -35,6 +40,13 @@
         const value = select.value;
         const desc = select.selectedOptions[0].text;
         head.textContent = desc;
+
+
+        let smt = document.getElementById('chart_container');
+        smt.innerHTML = '&nbsp';
+        smt.innerHTML = '<canvas id="myChart"></canvas>';
+
+        let ctx = document.getElementById('myChart').getContext('2d');
 
         let url = '/ajax?value=' + value + '&after=' + after.value + '&before=' + before.value;
         fetch(url)
@@ -68,6 +80,41 @@
             }
             str += "</table>"
             tab.innerHTML = str;
+
+            //////chart
+            let label_dates = [];
+            let label_values = [];
+            for (let key in data) {
+                label_dates.push(data[key].data);
+                label_values.push(data[key].counter_value);
+            }
+            console.log(label_dates);
+            console.log(label_values);
+
+            //let ctx = document.getElementById('myChart').getContext('2d');
+
+            ////ctx.clearRect(0, 0, 500, 500);
+
+            let myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: label_dates,
+                    datasets: [{
+                        label: select.selectedOptions[0].text,
+                        data: label_values,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         })
         .catch(err => {
             console.log(err);
