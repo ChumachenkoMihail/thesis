@@ -1,10 +1,14 @@
 <header class="sticky-header">
     <div class="header-menu">
         <a href="/" class="header-logo"><img src="/images/logo.png" alt="image" class="header-logo" ></a>
+        {{#if admin}}
+            <a href="/change" class="header-content">Змінити тарифи</a>
+        {{else}}
+            <a href="/" class="header-content"></a>
+        {{/if}}
+
         <a href="/faq" class="header-content">Часті питання</a>
-        <a href="/about" class="header-content">Про компанію</a>
-        <a href="" class="header-content">Тарифи</a>
-        <!--TODO: добавить страницу тарифов-->
+        <a href="/services" class="header-content">Тарифи</a>
         {{#if authenticated}}
             <qwe class="header-content">
                 <a href="/personal" class="header-content">Про квартиру</a>

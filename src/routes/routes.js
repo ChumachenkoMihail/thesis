@@ -192,7 +192,9 @@ router.post('/signin', (req, res) => {
                             personal_account_id: foundUser.personal_account_id
                         }
                     }).then(foundAccount => {
-                        console.log('Authenticated');
+                        if(login === 'admin@gmail.com'){
+                            res.cookie('admin', 'true');
+                        }
                         res.cookie('auth', 'true');
                         res.cookie('user_id', foundAccount.personal_account_id);
                         res.cookie('personal_id', foundUser.user_id);
@@ -215,6 +217,7 @@ router.post('/signin', (req, res) => {
 
 router.get('/logout',(req,res)=>{
     res.clearCookie('auth');
+    res.clearCookie('admin');
     res.redirect('/');
 })
 
@@ -1660,13 +1663,148 @@ router.get('/payments_ajax', (req,res)=>{
     foo();
 })
 
-//TODO: need to finish about page
-router.get('/about',(req,res)=>{
-    res.render('about.hbs',{
-        title: 'Про компанію'
+router.get('/services', (req,res)=>{
+    Services.findAll({raw:true}).then(foundServices => {
+        for(let key in foundServices){
+            switch(foundServices[key].service_id){
+                case 1: foundServices[key].service_name = 'Електроенергія';break;
+                case 2: foundServices[key].service_name = 'Газ';break;
+                case 3: foundServices[key].service_name = 'Поставка газу';break;
+                case 4: foundServices[key].service_name = 'Водорозподіл';break;
+                case 5: foundServices[key].service_name = 'Опалення';break;
+                case 7: foundServices[key].service_name = 'Вивіз сміття';break;
+                case 8: foundServices[key].service_name = 'Домофон';break;
+                case 9: foundServices[key].service_name = 'Послуга з управління домом';break;
+            }
+        }
+        res.render('services.hbs',{
+            title: 'Тарифи',
+            services: foundServices
+        })
     })
+
 })
 
+router.get('/change', (req,res)=>{
+    if(req.cookies.auth === 'true' && req.cookies.admin === 'true'){
+        let services = {};
+        Services.findOne({raw: true, where:{
+            service_id: 1
+            }}).then(found_service => {
+                services.electro = found_service.rate;
+        })
+        .then(()=>{
+            return Services.findOne({raw: true, where:{
+                    service_id: 2
+                }})
+        })
+        .then(found_service => {
+            services.gas = found_service.rate;
+        })
+        .then(()=>{
+            return Services.findOne({raw: true, where:{
+                    service_id: 3
+                }})
+        })
+        .then(found_service => {
+            services.postavka = found_service.rate;
+        })
+        .then(()=>{
+            return Services.findOne({raw: true, where:{
+                    service_id: 4
+                }})
+        })
+        .then(found_service => {
+            services.voda = found_service.rate;
+        })
+        .then(()=>{
+            return Services.findOne({raw: true, where:{
+                    service_id: 5
+                }})
+        })
+        .then(found_service => {
+            services.otoplenie = found_service.rate;
+        })
+        .then(()=>{
+            return Services.findOne({raw: true, where:{
+                    service_id: 7
+                }})
+        })
+        .then(found_service => {
+            services.musor = found_service.rate;
+        })
+        .then(()=>{
+            return Services.findOne({raw: true, where:{
+                    service_id: 8
+                }})
+        })
+        .then(found_service => {
+            services.domofon = found_service.rate;
+        })
+        .then(()=>{
+            return Services.findOne({raw: true, where:{
+                    service_id: 9
+                }})
+        })
+        .then(found_service => {
+            services.sdpt = found_service.rate;
+        })
+        .then(()=>{
+            res.render('change.hbs', {
+                title: 'Змінити тарифи',
+                services: services
+            })
+        })
 
+    }
+    else{
+        if(req.cookies.auth === 'true'){
+            console.log('auth === true')
+        }
+        if(req.cookies.admin === 'true'){
+            console.log('admin === true')
+        }
+        res.redirect('/signin');
+    }
+
+})
+
+router.post('/change', (req,res)=>{
+    if(!req.body) res.sendStatus(400);
+
+    const {electro, gas, postavka, water, otoplenie, musor, domofon, sdpt} = req.body;
+
+    if(electro){
+        Services.update({rate:electro}, {where: {service_id: 1}});
+    }
+    if(gas){
+        Services.update({rate:gas}, {where: {service_id: 2}});
+    }
+    if(postavka){
+        Services.update({rate:postavka}, {where: {service_id: 3}});
+    }
+    if(water){
+        Services.update({rate:water}, {where: {service_id: 4}});
+    }
+    if(otoplenie){
+        Services.update({rate:otoplenie}, {where: {service_id: 5}});
+    }
+    if(musor){
+        Services.update({rate:musor}, {where: {service_id: 7}});
+    }
+    if(domofon){
+        Services.update({rate:domofon}, {where: {service_id: 8}});
+    }
+    if(sdpt){
+        Services.update({rate:sdpt}, {where: {service_id: 9}});
+    }
+    res.redirect('/personal');
+})
+
+router.get('/faq', (req,res)=>{
+    res.render('faq.hbs', {
+        title: 'Часті питання'
+    })
+})
 
 module.exports = router;

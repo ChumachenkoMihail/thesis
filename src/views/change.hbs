@@ -1,0 +1,64 @@
+<body>
+{{>header}}
+<div style="width: 100%; height: 100%">
+    <br>
+    <h1 align="center">Змінити тарифи</h1>
+    <form style="margin: 0; width: 100%" method="post" action="/change">
+        <div align="center" class="enter-table">
+            <table border="1" cellspacing="0">
+                <tr align="center" valign="center" class="table-grey">
+                    <td class="td_padding">Назва тарифу</td>
+                    <td class="td_padding">Значення</td>
+                    <td class="td_padding">Введіть нове значення</td>
+                </tr>
+                <tr align="center" valign="center" >
+                    <td class="td_padding">Електроенергія</td>
+                    <td class="td_padding">{{services.electro}}</td>
+                    <td class="td_padding"><input type="text" name="electro" id="electro_input" pattern="^\d*\.\d+|^\d*"></td>
+                </tr>
+                <tr align="center" valign="center" class="table-grey">
+                    <td class="td_padding">Газ</td>
+                    <td class="td_padding">{{services.gas}}</td>
+                    <td class="td_padding"><input type="text" name="gas" class="table-grey" id="gas_input" pattern="/^\d*\.\d+|^\d*/g"></td>
+                </tr>
+                <tr align="center" valign="center" >
+                    <td class="td_padding">Поставка газу</td>
+                    <td class="td_padding">{{services.postavka}}</td>
+                    <td class="td_padding"><input type="text" name="postavka" id="postavka_input" pattern="/^\d*\.\d+|^\d*/g"></td>
+                </tr>
+                <tr align="center" valign="center" class="table-grey">
+                    <td class="td_padding">Водорозподіл</td>
+                    <td class="td_padding">{{services.voda}}</td>
+                    <td class="td_padding"><input type="text" name="water" class="table-grey" id="water_input" pattern="/^\d*\.\d+|^\d*/g"></td>
+                </tr>
+                <tr align="center" valign="center" >
+                    <td class="td_padding">Опалення</td>
+                    <td class="td_padding">{{services.otoplenie}}</td>
+                    <td class="td_padding"><input type="text" name="otoplenie" id="otoplenie_input" pattern="/^\d*\.\d+|^\d*/g"></td>
+                </tr>
+                <tr align="center" valign="center" class="table-grey">
+                    <td class="td_padding">Вивіз сміття</td>
+                    <td class="td_padding">{{services.musor}}</td>
+                    <td class="td_padding"><input type="text" name="musor" class="table-grey" id="musor_input" pattern="/^\d*\.\d+|^\d*/g"></td>
+                </tr>
+                <tr align="center" valign="center" >
+                    <td class="td_padding">Домофон</td>
+                    <td class="td_padding">{{services.domofon}}</td>
+                    <td class="td_padding"><input type="text" name="domofon" id="domofon_input" pattern="/^\d*\.\d+|^\d*/g"></td>
+                </tr>
+                <tr align="center" valign="center" class="table-grey">
+                    <td class="td_padding">Послуга з управління домом</td>
+                    <td class="td_padding">{{services.sdpt}}</td>
+                    <td class="td_padding"><input type="text" name="sdpt" class="table-grey" id="sdpt_input" pattern="/^\d*\.\d+|^\d*/g"></td>
+                </tr>
+            </table>
+
+        </div>
+        <div style="display: flex; justify-content: center">
+            <input type="submit" value="Змінити тарифи" class="enter-button" align="center">
+        </div>
+    </form>
+
+    <br><br><br><br><br><br>
+</div>
+</body>

@@ -1,0 +1,37 @@
+<body>
+{{>header}}
+
+<h1 align="center" id="head">Тарифи на </h1>
+<div style="width: 100%; margin: 25px" align="center">
+    <table align="center" cellspacing="6">
+    {{#each services}}
+            <tr align="center">
+                <td align="center">
+                    {{service_name}}
+                </td>
+                <td align="left">
+                    {{rate}}&nbsp;грн.
+                </td>
+            </tr>
+    {{/each}}
+    </table>
+</div>
+<br><br><br><br><br>
+</body>
+
+<script>
+    let el = document.getElementById('head');
+    let data = new Date();
+    let yyyy = String(data.getFullYear());
+    let mm = String(data.getMonth()+1);
+    let dd = String(data.getDate());
+    if(data.getMonth()+1<10)
+        mm = '0' + mm;
+    if(data.getDate()<10)
+        dd = '0' + dd;
+
+    let output = dd +'.'+ mm +'.'+ yyyy;
+
+    el.textContent += output;
+</script>
+

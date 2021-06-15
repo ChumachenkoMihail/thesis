@@ -7,18 +7,18 @@ li{
     list-style: none;
 }
 body{
-    background: white;
-    font-family: 'Verdana', serif;
-    color: black;
+    background: white !important;
+    font-family: 'Verdana', serif !important;
+    color: black !important;
 }
 a{
-    text-decoration: none;
-    color: black;
-    opacity: 0.6;
+    text-decoration: none !important;
+    color: black !important;
+    opacity: 0.6 !important;
 }
 a:hover{
-    text-decoration: underline;
-    opacity: 1;
+    text-decoration: underline !important;
+    opacity: 1 !important;
 }
 /* header styles*/
 .sticky-header{
@@ -289,6 +289,7 @@ input#data{
     width: 20%;
     float: left;
     padding: 25px;
+    height: 100%;
 }
 input#after{
     border: 1px solid black;
@@ -337,7 +338,7 @@ button#accruals{
 .chart{
     width: 500px;
     height: 500px;
-    justify-content: center;
+    padding: 25px;
 }
 /*pay select page*/
 .pay-select-row{
@@ -357,4 +358,9 @@ button#accruals{
 }
 .pay-center{
     text-align: center;
+}
+
+.card{
+    margin-bottom: 25px;
+
 }

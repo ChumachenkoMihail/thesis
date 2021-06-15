@@ -24,6 +24,11 @@ class Server {
                 res.locals.authenticated = true;
             next();
         });
+        this.app.use((req,res,next)=>{
+            if(req.cookies.admin === 'true')
+                res.locals.admin = true;
+            next();
+        });
         this.app.use(routes);
 
         //Для работы с шаблонизатором handlebars

@@ -1,7 +1,8 @@
 <body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js"></script>
 {{>header}}
-
+<h2 align="center" id="head"></h2>
     <div class="side_accruals">
         <select id="sel" name="sel">
             <option value="0" selected disabled>Оберіть послугу...</option>
@@ -19,11 +20,10 @@
         <div id="data_container">До:&nbsp;<input type="date" id="before"></div>
         <button value="Вивести історію" id="accruals">Вивести історію оплати</button>
     </div>
-    <div>
-        <h2 align="center" id="head"></h2>
-    </div>
-    <div id="tab" align="center" style="margin: 30px">
+    <div style="display: inline-block; width: 60%">
+        <div style="margin: 30px" id="tab" align="center">
 
+        </div>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 </body>
@@ -61,8 +61,50 @@
                                       </tr>`;
 
                     }
-                    str += "</table>"
+                    str += "</table>";
+                    str += "<div class=\"chart\" id=\"chart_container\">\n" +
+                            "        </div>";
                     tab.innerHTML = str;
+
+                    /////chart
+
+
+                    let smt = document.getElementById('chart_container');
+                    smt.innerHTML = '&nbsp';
+                    smt.innerHTML = '<canvas id="myChart"></canvas>';
+                    let ctx = document.getElementById('myChart').getContext('2d');
+
+                    let label_dates = [];
+                    let label_values = [];
+                    for (let key in data) {
+                        label_dates.push(data[key].date);
+                        label_values.push(data[key].amount_paid);
+                    }
+                    console.log(typeof label_values)
+                    console.log(label_values);
+
+
+                    let myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: label_dates,
+                            datasets: [{
+                                label: select.selectedOptions[0].text,
+                                data: label_values,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+
                 })
                 .catch(err => {
                     console.log(err);

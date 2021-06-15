@@ -2,6 +2,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js"></script>
 {{>header}}
+<br>
+<h1 align="center" id="head">Статистика нарахувань</h1>
+<div style="justify-content: space-between">
     <div class="side_accruals">
         <select id="sel" name="sel">
             <option value="0" selected disabled>Оберіть послугу...</option>
@@ -18,16 +21,14 @@
         <div id="data_container">До:&nbsp;<input type="date" id="before"></div>
         <button value="Вивести історію" id="accruals">Вивести історію нарахувань</button>
     </div>
-    <div>
-        <h1 align="center" id="head"></h1>
-    </div>
-    <div id="tab" align="center" style="margin: 30px">
 
-    </div>
-    <div align="center">
-        <div class="chart" id="chart_container">
+    <div style="display: inline-block; width: 60%">
+        <div id="tab" align="center" style="margin: 30px">
         </div>
     </div>
+
+</div>
+
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <script>
     const selectElement = document.querySelector('[id="accruals"]');
@@ -42,11 +43,7 @@
         head.textContent = desc;
 
 
-        let smt = document.getElementById('chart_container');
-        smt.innerHTML = '&nbsp';
-        smt.innerHTML = '<canvas id="myChart"></canvas>';
 
-        let ctx = document.getElementById('myChart').getContext('2d');
 
         let url = '/ajax?value=' + value + '&after=' + after.value + '&before=' + before.value;
         fetch(url)
@@ -56,7 +53,7 @@
         .then(data => {
             const tab = document.querySelector('[id="tab"]');
             let str = "";
-            str = `<table border="1" cellspacing="0" class="accruals_table">
+            str += `<table border="1" cellspacing="0" class="accruals_table">
             <tr align="center" valign="center">
                 <td class="td_padding">Дата внесення показань</td>
                 <td class="td_padding">Показання</td>
@@ -67,33 +64,37 @@
                 str += `<tr align="center" valign="center">
                                            <td class="td_padding">${data[key].data}</td>
                                            <td class="td_padding">${data[key].counter_value}</td>
-                                           <td class="td_padding">${data[key].amount_to_pay}</td>`
+                                           <td class="td_padding">${data[key].amount_to_pay}</td>`;
                 if(data[key].paid === 'true'){
-                    str += `<td class="td_padding">Сплачено</td>`
+                    str += `<td class="td_padding">Сплачено</td>`;
                 }
                 else{
-                    str += `<td class="td_padding">Не сплачено</td>`
+                    str += `<td class="td_padding">Не сплачено</td>`;
 
                 }
-                str+= `</tr>`
+                str+= `</tr>`;
 
             }
-            str += "</table>"
+            str += "</table>";
+
+            str += "<div class=\"chart\" id=\"chart_container\">\n" +
+                    "        </div>";
             tab.innerHTML = str;
 
             //////chart
+
+            let smt = document.getElementById('chart_container');
+            smt.innerHTML = '&nbsp';
+            smt.innerHTML = '<canvas id="myChart"></canvas>';
+            let ctx = document.getElementById('myChart').getContext('2d');
+
             let label_dates = [];
             let label_values = [];
             for (let key in data) {
                 label_dates.push(data[key].data);
                 label_values.push(data[key].counter_value);
             }
-            console.log(label_dates);
-            console.log(label_values);
 
-            //let ctx = document.getElementById('myChart').getContext('2d');
-
-            ////ctx.clearRect(0, 0, 500, 500);
 
             let myChart = new Chart(ctx, {
                 type: 'bar',
